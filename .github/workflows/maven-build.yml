@@ -1,0 +1,68 @@
+name: Maven Build
+on:
+  workflow_call:
+    inputs:
+      repository:
+        required: true
+        type: string
+      ref:
+        default: ''
+        required: false
+        type: string
+      target:
+        default: 'target/*.jar'
+        required: false
+        type: string
+      name:
+        default: 'Artifact'
+        required: false
+        type: string
+      commands:
+        default: 'echo Nothing here'
+        required: false
+        type: string
+      java:
+        default: '16'
+        required: false
+        type: string
+      distribution:
+        default: 'temurin'
+        required: false
+        type: string
+      os:
+        default: 'ubuntu-latest'
+        required: false
+        type: string
+      opts:
+        default: "-Xmx2048m --illegal-access=permit"
+        required: false
+        type: string
+      tasks:
+        default: "clean package"
+        required: false
+        type: string
+jobs:
+  build:
+    runs-on: ${{ inputs.os }}
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        repository: ${{ inputs.repository }}
+        ref: ${{ inputs.ref }}
+    - name: Set up JDK
+      uses: actions/setup-java@v4.2.2
+      with:
+        java-version: ${{ inputs.java }}
+        distribution: ${{ inputs.distribution }}
+        cache: maven
+    - name: Build with Maven
+      run: |
+        ${{ inputs.commands }}
+        mvn ${{ inputs.tasks }}
+      env:
+        MAVEN_OPTS: ${{ inputs.opts }}
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.name }}
+        path: ${{ inputs.target }}
