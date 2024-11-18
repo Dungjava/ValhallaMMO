@@ -3,7 +3,6 @@ package me.athlaeos.valhallammo.animations.implementations;
 import me.athlaeos.valhallammo.animations.Animation;
 import org.bukkit.Location;
 import org.bukkit.Particle;
-import org.bukkit.Sound;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 

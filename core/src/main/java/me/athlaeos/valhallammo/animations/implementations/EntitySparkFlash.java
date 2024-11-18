@@ -4,7 +4,6 @@ import me.athlaeos.valhallammo.animations.Animation;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import static me.athlaeos.valhallammo.utility.Utils.oldOrNew;

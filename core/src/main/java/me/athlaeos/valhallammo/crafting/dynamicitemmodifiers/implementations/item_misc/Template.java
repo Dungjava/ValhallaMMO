@@ -26,6 +26,7 @@ public class Template extends DynamicItemModifier {
     @Override
     public void onButtonPress(InventoryClickEvent e, int button) {
         if (button == 12) {
+            @SuppressWarnings("unused")
             double placeholder = Math.max(0, 0 + ((e.isLeftClick() ? 1 : -1) * (e.isShiftClick() ? 0.1 : 0.01)));
         }
     }

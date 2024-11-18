@@ -66,53 +66,6 @@ public class ConfigUpdater {
         write(newConfig, oldConfig, comments, includedSectionsArrayList, writer, yaml);
     }
 
-    private static void writeWithFilter(FileConfiguration newConfig, FileConfiguration oldConfig, Map<String, String> comments, List<String> includedSections, BufferedWriter writer, Yaml yaml) throws IOException {
-        outer: for (String key : newConfig.getKeys(true)) {
-            String[] keys = key.split("\\.");
-            String actualKey = keys[keys.length - 1];
-            String comment = comments.remove(key);
-
-            StringBuilder prefixBuilder = new StringBuilder();
-            int indents = keys.length - 1;
-            appendPrefixSpaces(prefixBuilder, indents);
-            String prefixSpaces = prefixBuilder.toString();
-
-            if (comment != null) {
-                writer.write(comment);//No \n character necessary, new line is automatically at end of comment
-            }
-
-            for (String ignoredSection : includedSections) {
-                if (!key.startsWith(ignoredSection)) {
-                    continue outer;
-                }
-            }
-
-            Object newObj = newConfig.get(key);
-            Object oldObj = oldConfig.get(key);
-            if (newObj instanceof ConfigurationSection && oldObj instanceof ConfigurationSection) {
-                //write the old section
-                writeSection(writer, actualKey, prefixSpaces, (ConfigurationSection) oldObj);
-            } else if (newObj instanceof ConfigurationSection) {
-                //write the new section, old value is no more
-                writeSection(writer, actualKey, prefixSpaces, (ConfigurationSection) newObj);
-            } else if (oldObj != null) {
-                //write the old object
-                write(oldObj, actualKey, prefixSpaces, yaml, writer);
-            } else {
-                //write new object
-                write(newObj, actualKey, prefixSpaces, yaml, writer);
-            }
-        }
-
-        String danglingComments = comments.get(null);
-
-        if (danglingComments != null) {
-            writer.write(danglingComments);
-        }
-
-        writer.close();
-    }
-
     //Write method doing the work.
     //It checks if key has a comment associated with it and writes comment then the key and value
     private static void write(FileConfiguration newConfig, FileConfiguration oldConfig, Map<String, String> comments, List<String> ignoredSections, BufferedWriter writer, Yaml yaml) throws IOException {

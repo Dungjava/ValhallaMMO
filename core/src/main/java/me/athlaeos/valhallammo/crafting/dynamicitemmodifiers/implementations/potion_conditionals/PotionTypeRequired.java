@@ -12,14 +12,12 @@ import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionType;
 
 import java.util.*;
 
-import static me.athlaeos.valhallammo.utility.Utils.oldOrNew;
 
 public class PotionTypeRequired extends DynamicItemModifier {
     public static final List<PotionType> legalTypes = new ArrayList<>(List.of(PotionType.AWKWARD, PotionType.MUNDANE, PotionType.THICK));
