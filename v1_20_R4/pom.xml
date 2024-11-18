@@ -35,6 +35,11 @@
             <version>${project.parent.version}</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+	        <groupId>com.github.NahuLD.folia-scheduler-wrapper</groupId>
+	        <artifactId>folia-scheduler-wrapper</artifactId>
+	        <version>v0.0.3</version>
+	    </dependency>
     </dependencies>
 
     <build>

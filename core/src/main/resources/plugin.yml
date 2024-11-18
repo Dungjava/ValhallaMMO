@@ -3,6 +3,7 @@ version: ${project.version}
 main: me.athlaeos.valhallammo.ValhallaMMO
 author: Athlaeos
 api-version: "1.16"
+folia-supported: true
 load: POSTWORLD
 softdepend:
 - Vault

@@ -39,6 +39,8 @@ import me.athlaeos.valhallammo.utility.GlobalEffect;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import me.athlaeos.valhallammo.version.AlphaToBetaConversionHandler;
+import me.nahu.scheduler.wrapper.WrappedScheduler;
+import me.nahu.scheduler.wrapper.WrappedSchedulerBuilder;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -60,6 +62,7 @@ public class ValhallaMMO extends JavaPlugin {
     private static final Map<Class<? extends PluginHook>, PluginHook> activeHooks = new HashMap<>();
     private static YamlConfiguration pluginConfig;
     private static final Collection<String> worldBlacklist = new HashSet<>();
+    private WrappedScheduler scheduler;
     private static final boolean usingPaperMC = Catch.catchOrElse(() -> {
         try {
             Class.forName("com.destroystokyo.paper.loottable.LootableInventory");
@@ -141,6 +144,9 @@ public class ValhallaMMO extends JavaPlugin {
         saveConfig("skills/woodcutting.yml");
         saveConfig("skills/woodcutting_progression.yml");
         TranslationManager.load(lang);
+
+        final WrappedSchedulerBuilder schedulerBuilder = WrappedSchedulerBuilder.builder().plugin(this);
+		scheduler = schedulerBuilder.build();
 
         if (!setupNMS()){
             enabled = false;

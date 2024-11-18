@@ -126,5 +126,10 @@
             <version>2.8.5</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+	        <groupId>com.github.NahuLD.folia-scheduler-wrapper</groupId>
+	        <artifactId>folia-scheduler-wrapper</artifactId>
+	        <version>v0.0.3</version>
+	    </dependency>
     </dependencies>
 </project>
