@@ -81,6 +81,7 @@ public class ValhallaMMO extends JavaPlugin {
     }
 
     private static boolean enabled = true;
+    public static Object getInstance;
 
     @Override
     public void onLoad() {

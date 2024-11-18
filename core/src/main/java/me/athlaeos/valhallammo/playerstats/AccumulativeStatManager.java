@@ -16,6 +16,8 @@ import me.nahu.scheduler.wrapper.task.WrappedTask;
 import me.nahu.scheduler.wrapper.type.ImplementationType;
 import me.nahu.scheduler.wrapper.WrappedScheduler;
 import me.nahu.scheduler.wrapper.WrappedSchedulerBuilder;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
@@ -474,7 +476,7 @@ public class AccumulativeStatManager {
     }
 
     private static void attemptMapCleanup(){
-        ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
+        Bukkit.getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
             if (lastMapCleanup + 120000 < System.currentTimeMillis()){
                 // cleaning up map every 2 minutes
                 new HashSet<>(statCache.keySet()).stream().filter(u -> {
