@@ -2,6 +2,8 @@ package me.athlaeos.valhallammo.utility;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
+
+import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
@@ -28,7 +30,7 @@ public class GlobalEffect extends BukkitRunnable {
 
     private static List<EffectProperties> currentLoopEffects = new ArrayList<>();
     private static int currentLoopIndex = 0;
-    private static final BossBar bossBar = ValhallaMMO.getInstance().getServer().createBossBar("", BarColor.BLUE, BarStyle.SOLID);
+    private static final BossBar bossBar = Bukkit.createBossBar("", BarColor.BLUE, BarStyle.SOLID);
     private static int timer = 0;
 
     @Override
@@ -44,7 +46,7 @@ public class GlobalEffect extends BukkitRunnable {
                 long lastsFor = l == -1 ? -1 : Math.max(0, l);
                 long originalDuration = getOriginalDuration(currentEffect.effect);
 
-                ValhallaMMO.getInstance().getServer().getOnlinePlayers().forEach(player -> {
+                Bukkit.getOnlinePlayers().forEach(player -> {
                     if (!temporarilyExcludePlayers.contains(player)){
                         bossBar.addPlayer(player);
                     }

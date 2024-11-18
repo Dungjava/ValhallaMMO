@@ -3,6 +3,8 @@ package me.athlaeos.valhallammo.potioneffects;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.dom.CustomDamageType;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
+
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 
 import java.util.HashMap;
@@ -55,7 +57,7 @@ public class EffectResponsibility {
             else responsibleUntil.put(victim, map);
             return null; // responsibility expired
         }
-        Entity responsible = ValhallaMMO.getInstance().getServer().getEntity(responsibility.responsible);
+        Entity responsible = Bukkit.getEntity(responsibility.responsible);
         if (responsible == null || !responsible.isValid() || responsible.isDead()) return null; // responsible entity is dead or removed
         return responsible; // returns responsible entity
     }

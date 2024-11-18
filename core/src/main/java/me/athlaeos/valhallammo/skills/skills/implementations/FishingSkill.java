@@ -18,6 +18,8 @@ import me.athlaeos.valhallammo.skills.ChunkEXPNerf;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
@@ -79,7 +81,7 @@ public class FishingSkill extends Skill implements Listener {
             ValhallaMMO.logWarning(String.join(", ", invalidMaterials));
         }
 
-        ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(this, ValhallaMMO.getInstance());
+        Bukkit.getPluginManager().registerEvents(this, ValhallaMMO.getInstance());
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -213,7 +215,7 @@ public class FishingSkill extends Skill implements Listener {
             List<ItemStack> loot = LootTableRegistry.getLoot(table, context, LootTable.LootType.FISH);
 
             ValhallaLootPopulateEvent loottableEvent = new ValhallaLootPopulateEvent(table, context, loot);
-            ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(loottableEvent);
+            Bukkit.getPluginManager().callEvent(loottableEvent);
             if (!loottableEvent.isCancelled()){
                 boolean clearVanilla = switch (loottableEvent.getPreservationType()){
                     case CLEAR -> true;
@@ -260,7 +262,7 @@ public class FishingSkill extends Skill implements Listener {
             List<ItemStack> loot = LootTableRegistry.getLoot(table, context, LootTable.LootType.FISH);
 
             ValhallaLootPopulateEvent loottableEvent = new ValhallaLootPopulateEvent(table, context, loot);
-            ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(loottableEvent);
+            Bukkit.getPluginManager().callEvent(loottableEvent);
             if (!loottableEvent.isCancelled()){
                 LootListener.prepareFishingDrops(p.getUniqueId(), loottableEvent.getDrops());
                 boolean clearVanilla = switch (loottableEvent.getPreservationType()){

@@ -5,6 +5,8 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.dom.Action;
 import me.athlaeos.valhallammo.dom.Catch;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -87,7 +89,7 @@ public class BlockUtils {
     public static Player getOwner(Block b){
         PersistentDataContainer customBlockData = new CustomBlockData(b, ValhallaMMO.getInstance());
         String value = customBlockData.get(BLOCK_OWNER, PersistentDataType.STRING);
-        if (value != null) return ValhallaMMO.getInstance().getServer().getPlayer(UUID.fromString(value));
+        if (value != null) return Bukkit.getPlayer(UUID.fromString(value));
         return null;
     }
     private static final int[][] offsets = new int[][]{
@@ -180,10 +182,10 @@ public class BlockUtils {
         for (Double distance : sortedByDistance.keySet()){
             int time = (int) MathUtils.sqrt(distance);
             if (time > highest) highest = time;
-            ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> processBlocks(responsible, sortedByDistance.get(distance), validation, process, null), time * PULSE_DELAY);
+            Bukkit.getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> processBlocks(responsible, sortedByDistance.get(distance), validation, process, null), time * PULSE_DELAY);
         }
         if (onFinish != null) {
-            ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> onFinish.act(responsible), (highest * PULSE_DELAY) + 1);
+            Bukkit.getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> onFinish.act(responsible), (highest * PULSE_DELAY) + 1);
         }
     }
 
@@ -235,7 +237,7 @@ public class BlockUtils {
 
     public static void decayBlock(Block block){
         LeavesDecayEvent decayEvent = new LeavesDecayEvent(block);
-        ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(decayEvent);
+        Bukkit.getPluginManager().callEvent(decayEvent);
         if (decayEvent.isCancelled()) return;
 
         block.breakNaturally();

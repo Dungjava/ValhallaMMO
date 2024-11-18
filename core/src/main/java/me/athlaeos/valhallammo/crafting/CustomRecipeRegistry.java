@@ -19,6 +19,8 @@ import me.athlaeos.valhallammo.listeners.CookingListener;
 import me.athlaeos.valhallammo.listeners.SmithingTableListener;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.version.SmithingTransformRecipeWrapper;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -106,7 +108,7 @@ public class CustomRecipeRegistry {
 
     public static void saveRecipes(boolean async){
         if (!changesMade) return;
-        if (async) ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), CustomRecipeRegistry::saveAllRecipeTypes);
+        if (async) Bukkit.getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), CustomRecipeRegistry::saveAllRecipeTypes);
         else saveAllRecipeTypes();
     }
 
@@ -126,54 +128,54 @@ public class CustomRecipeRegistry {
     public static void loadBrewingRecipes(File file, boolean overwrite){
         if (!file.exists()) return;
         ValhallaMMO.logInfo("Loading brewing recipes from " + file.getPath());
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () ->
+        Bukkit.getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () ->
                 new RecipePersistence<DynamicBrewingRecipe>().getRecipesFromFile(file, DynamicBrewingRecipe[].class).forEach((k, r) ->
-                    ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> register(r, overwrite))
+                    Bukkit.getScheduler().runTask(ValhallaMMO.getInstance(), () -> register(r, overwrite))
                 )
         );
     }
     public static void loadCauldronRecipes(File file, boolean overwrite){
         if (!file.exists()) return;
         ValhallaMMO.logInfo("Loading cauldron recipes from " + file.getPath());
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () ->
+        Bukkit.getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () ->
                 new RecipePersistence<DynamicCauldronRecipe>().getRecipesFromFile(file, DynamicCauldronRecipe[].class).forEach((k, r) ->
-                        ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> register(r, overwrite))
+                        Bukkit.getScheduler().runTask(ValhallaMMO.getInstance(), () -> register(r, overwrite))
                 )
         );
     }
     public static void loadCookingRecipes(File file, boolean overwrite){
         if (!file.exists()) return;
         ValhallaMMO.logInfo("Loading cooking recipes from " + file.getPath());
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () ->
+        Bukkit.getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () ->
                 new RecipePersistence<DynamicCookingRecipe>().getRecipesFromFile(file, DynamicCookingRecipe[].class).forEach((k, r) ->
-                        ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> register(r, overwrite))
+                        Bukkit.getScheduler().runTask(ValhallaMMO.getInstance(), () -> register(r, overwrite))
                 )
         );
     }
     public static void loadGridRecipes(File file, boolean overwrite){
         if (!file.exists()) return;
         ValhallaMMO.logInfo("Loading crafting grid recipes from " + file.getPath());
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () ->
+        Bukkit.getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () ->
                 new RecipePersistence<DynamicGridRecipe>().getRecipesFromFile(file, DynamicGridRecipe[].class).forEach((k, r) ->
-                        ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> register(r, overwrite))
+                        Bukkit.getScheduler().runTask(ValhallaMMO.getInstance(), () -> register(r, overwrite))
                 )
         );
     }
     public static void loadSmithingRecipes(File file, boolean overwrite){
         if (!file.exists()) return;
         ValhallaMMO.logInfo("Loading smithing recipes from " + file.getPath());
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () ->
+        Bukkit.getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () ->
                 new RecipePersistence<DynamicSmithingRecipe>().getRecipesFromFile(file, DynamicSmithingRecipe[].class).forEach((k, r) ->
-                        ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> register(r, overwrite))
+                        Bukkit.getScheduler().runTask(ValhallaMMO.getInstance(), () -> register(r, overwrite))
                 )
         );
     }
     public static void loadImmersiveRecipes(File file, boolean overwrite){
         if (!file.exists()) return;
         ValhallaMMO.logInfo("Loading immersive recipes from " + file.getPath());
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () ->
+        Bukkit.getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () ->
                 new RecipePersistence<ImmersiveCraftingRecipe>().getRecipesFromFile(file, ImmersiveCraftingRecipe[].class).forEach((k, r) ->
-                        ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> register(r, overwrite))
+                        Bukkit.getScheduler().runTask(ValhallaMMO.getInstance(), () -> register(r, overwrite))
                 )
         );
     }
@@ -252,7 +254,7 @@ public class CustomRecipeRegistry {
             SmithingTableListener.smithingRecipeCache.clear();
             boolean isTemplateCompatible = MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20);
             if (isTemplateCompatible) recipe.convertTemplate();
-            Iterator<Recipe> iterator = ValhallaMMO.getInstance().getServer().recipeIterator();
+            Iterator<Recipe> iterator = Bukkit.recipeIterator();
             while (iterator.hasNext()){
                 Recipe r = iterator.next();
                 if (!(r instanceof SmithingRecipe s) || (!s.getBase().test(recipe.getBase().getItem()) || !s.getAddition().test(recipe.getAddition().getItem()))) continue;

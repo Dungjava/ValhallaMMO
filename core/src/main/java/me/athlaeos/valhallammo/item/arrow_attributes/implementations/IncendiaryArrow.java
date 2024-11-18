@@ -7,6 +7,8 @@ import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.utility.AnimationUtils;
 import me.athlaeos.valhallammo.utility.BlockUtils;
 import me.athlaeos.valhallammo.utility.Utils;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -49,7 +51,7 @@ public class IncendiaryArrow extends ArrowBehavior {
                 if (!b.getType().isAir()) continue;
                 if (Utils.getRandom().nextDouble() < density){
                     BlockIgniteEvent igniteEvent = new BlockIgniteEvent(b, BlockIgniteEvent.IgniteCause.ARROW, e.getEntity());
-                    ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(igniteEvent);
+                    Bukkit.getPluginManager().callEvent(igniteEvent);
                     if (!igniteEvent.isCancelled()) b.setType(Material.FIRE);
                 }
             }

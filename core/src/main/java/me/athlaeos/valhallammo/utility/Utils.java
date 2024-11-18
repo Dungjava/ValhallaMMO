@@ -23,7 +23,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import java.util.*;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -56,7 +55,7 @@ public class Utils {
     public static Map<String, OfflinePlayer> getPlayersFromUUIDs(Collection<UUID> uuids){
         Map<String, OfflinePlayer> players = new HashMap<>();
         for (UUID uuid : uuids){
-            OfflinePlayer player = ValhallaMMO.getInstance().getServer().getOfflinePlayer(uuid);
+            OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
             players.put(player.getName(), player);
         }
         return players;
@@ -65,7 +64,7 @@ public class Utils {
     public static Map<String, Player> getOnlinePlayersFromUUIDs(Collection<UUID> uuids){
         Map<String, Player> players = new HashMap<>();
         for (UUID uuid : uuids){
-            Player player = ValhallaMMO.getInstance().getServer().getPlayer(uuid);
+            Player player = Bukkit.getPlayer(uuid);
             if (player != null) players.put(player.getName(), player);
         }
         return players;
@@ -179,7 +178,7 @@ public class Utils {
                     targets.add((Player) part);
             }
         } else {
-            Player target = ValhallaMMO.getInstance().getServer().getPlayer(selector);
+            Player target = Bukkit.getPlayer(selector);
             if (target != null) targets.add(target);
         }
         return targets;

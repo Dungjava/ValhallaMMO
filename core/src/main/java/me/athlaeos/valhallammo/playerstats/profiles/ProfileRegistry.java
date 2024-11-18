@@ -9,6 +9,8 @@ import me.athlaeos.valhallammo.persistence.implementations.SQLite;
 import me.athlaeos.valhallammo.playerstats.LeaderboardManager;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.*;
 import me.athlaeos.valhallammo.skills.skills.Skill;
+
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.sql.SQLException;
@@ -65,7 +67,7 @@ public class ProfileRegistry {
             }
         }
 
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskTimerAsynchronously(ValhallaMMO.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskTimerAsynchronously(ValhallaMMO.getInstance(), () -> {
             ProfileRegistry.saveAll();
             LeaderboardManager.refreshLeaderboards();
         }, delay_profile_saving, delay_profile_saving);

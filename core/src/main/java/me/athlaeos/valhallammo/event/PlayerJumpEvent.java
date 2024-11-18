@@ -1,6 +1,8 @@
 package me.athlaeos.valhallammo.event;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.*;
 import org.bukkit.event.entity.EntityExhaustionEvent;
@@ -34,10 +36,10 @@ public class PlayerJumpEvent extends Event {
         @EventHandler
         public void onStatisticJump(EntityExhaustionEvent e){
             if (!e.getExhaustionReason().toString().contains("JUMP") || !(e.getEntity() instanceof Player p)) return;
-            ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(new PlayerJumpEvent(p));
+            Bukkit.getPluginManager().callEvent(new PlayerJumpEvent(p));
         }
     }
     public static void register(ValhallaMMO plugin) {
-        ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(listener, plugin);
+        Bukkit.getPluginManager().registerEvents(listener, plugin);
     }
 }

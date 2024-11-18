@@ -21,6 +21,8 @@ import me.athlaeos.valhallammo.item.CustomItem;
 import me.athlaeos.valhallammo.item.CustomItemRegistry;
 import me.athlaeos.valhallammo.item.ItemAttributesRegistry;
 import me.athlaeos.valhallammo.item.item_attributes.AttributeWrapper;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.inventory.ItemStack;
@@ -53,7 +55,7 @@ public class Scripts {
         Map<Integer, SlotEntry> items = new HashMap<>();
         Pair<ItemStack, IngredientChoice> matchDetails = classifications.get(on);
         if (matchDetails == null) {
-            ValhallaMMO.getInstance().getServer().broadcastMessage("Failed");
+            Bukkit.broadcastMessage("Failed");
             return;
         }
         items.put(4, new SlotEntry(matchDetails.getOne(), matchDetails.getTwo()));
@@ -79,7 +81,7 @@ public class Scripts {
         recipe.setModifiers(modifiers);
 
         CustomRecipeRegistry.register(recipe, true);
-        ValhallaMMO.getInstance().getServer().broadcastMessage("Recipe created");
+        Bukkit.broadcastMessage("Recipe created");
     }
 
     // the following script was used to quickly transfer all custom items from recipes to the custom item registry, for ease of access ingame

@@ -5,6 +5,8 @@ import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Timer;
 import me.athlaeos.valhallammo.playerstats.EntityCache;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -64,7 +66,7 @@ public class HandSwitchListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onItemBreak(PlayerItemBreakEvent e){
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
             reset(e.getPlayer());
             playersWhoSwitchedItems.remove(e.getPlayer().getUniqueId());
         }, 1L);

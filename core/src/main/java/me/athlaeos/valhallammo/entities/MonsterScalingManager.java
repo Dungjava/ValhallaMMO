@@ -10,6 +10,7 @@ import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile
 import me.athlaeos.valhallammo.utility.Timer;
 import me.athlaeos.valhallammo.utility.Utils;
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -189,7 +190,7 @@ public class MonsterScalingManager {
     public static void setLevel(LivingEntity entity, int level){
         if (entity instanceof Player) return;
         EntityUpdateLevelEvent event = new EntityUpdateLevelEvent(entity, level);
-        ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+        Bukkit.getPluginManager().callEvent(event);
         if (event.isCancelled()) return;
         level = event.getLevel();
         if (level >= 0) entity.getPersistentDataContainer().set(ENTITY_LEVEL, PersistentDataType.INTEGER, level);
@@ -226,7 +227,7 @@ public class MonsterScalingManager {
         else if (defaultWolfLevelScaling != null) level = Math.max(0, (int) Utils.eval(defaultWolfLevelScaling.replace("%level%", String.valueOf(profile.getLevel()))));
         else return false;
         EntityUpdateLevelEvent event = new EntityUpdateLevelEvent(wolf, level);
-        ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+        Bukkit.getPluginManager().callEvent(event);
         if (event.isCancelled()) return false;
         level = event.getLevel();
         if (level == levelBefore) return false;
@@ -266,7 +267,7 @@ public class MonsterScalingManager {
 
     public static double getCachedDifficultyLevel(Player from){
         if (Timer.isCooldownPassed(from.getUniqueId(), "delay_regional_difficulty_cache_update")){
-            ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> getAreaDifficultyLevel(from.getLocation(), from));
+            Bukkit.getScheduler().runTask(ValhallaMMO.getInstance(), () -> getAreaDifficultyLevel(from.getLocation(), from));
             Timer.setCooldown(from.getUniqueId(), 10000, "delay_regional_difficulty_cache_update");
         }
         return regionalMonsterLevelCache.getOrDefault(from.getUniqueId(), 0D);

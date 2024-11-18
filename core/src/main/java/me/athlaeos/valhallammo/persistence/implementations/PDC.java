@@ -9,6 +9,8 @@ import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 import me.athlaeos.valhallammo.utility.Utils;
+
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -49,7 +51,7 @@ public class PDC extends ProfilePersistence {
     @Override
     public void loadProfile(Player p) {
         if (persistentProfiles.containsKey(p.getUniqueId())) return;
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
             Map<Class<? extends Profile>, Profile> profiles = persistentProfiles.getOrDefault(p.getUniqueId(), new HashMap<>());
             for (Profile pr : ProfileRegistry.getRegisteredProfiles().values()) {
                 String jsonProfile = p.getPersistentDataContainer().get(pr.getKey(), PersistentDataType.STRING);
@@ -76,7 +78,7 @@ public class PDC extends ProfilePersistence {
     public void saveAllProfiles() {
         for (UUID p : new HashSet<>(persistentProfiles.keySet())){
             if (!JoinLeaveListener.getLoadedProfiles().contains(p)) continue;
-            Player player = ValhallaMMO.getInstance().getServer().getPlayer(p);
+            Player player = Bukkit.getPlayer(p);
             if (player == null || !player.isOnline()) {
                 persistentProfiles.remove(p);
                 continue;

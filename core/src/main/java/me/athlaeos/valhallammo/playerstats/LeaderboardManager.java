@@ -12,6 +12,8 @@ import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.utility.Utils;
+
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -99,7 +101,7 @@ public class LeaderboardManager {
     public static void fetchLeaderboard(String leaderboard, boolean cache, Action<Map<Integer, LeaderboardEntry>> callback, boolean reload){
         Leaderboard l = leaderboards.get(leaderboard);
         if (l == null || !(ProfileRegistry.getPersistence() instanceof LeaderboardCompatible f)) return;
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
             if (cachedLeaderboardsByRank.containsKey(l.key) && !reload) {
                 if (callback != null) callback.act(cachedLeaderboardsByRank.get(l.key));
             } else {
@@ -113,7 +115,7 @@ public class LeaderboardManager {
     public static void fetchLeaderboardEntry(UUID uuid, String leaderboard, Action<LeaderboardEntry> callback){
         Leaderboard l = leaderboards.get(leaderboard);
         if (l == null || !(ProfileRegistry.getPersistence() instanceof LeaderboardCompatible f)) return;
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
             if (!cachedLeaderboardsByRank.containsKey(l.key)) cache(l, f.queryLeaderboardEntries(l));
             LeaderboardEntry entry = cachedLeaderboardsByPlayer.getOrDefault(l.key, new HashMap<>()).get(uuid);
             if (entry == null) return;

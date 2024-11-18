@@ -13,6 +13,8 @@ import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
+
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -64,17 +66,17 @@ public class DynamicGridRecipe implements ValhallaRecipe, ValhallaKeyedRecipe {
     public void registerRecipe() {
         ShapedRecipe shaped = getShapedRecipe();
         ShapelessRecipe shapeless = getShapelessRecipe();
-        if (ValhallaMMO.getInstance().getServer().getRecipe(shapedKey) != null) ValhallaMMO.getInstance().getServer().removeRecipe(shapedKey);
-        if (ValhallaMMO.getInstance().getServer().getRecipe(shapelessKey) != null) ValhallaMMO.getInstance().getServer().removeRecipe(shapelessKey);
-        if (shaped != null) ValhallaMMO.getInstance().getServer().addRecipe(shaped);
+        if (Bukkit.getRecipe(shapedKey) != null) Bukkit.removeRecipe(shapedKey);
+        if (Bukkit.getRecipe(shapelessKey) != null) Bukkit.removeRecipe(shapelessKey);
+        if (shaped != null) Bukkit.addRecipe(shaped);
         else ValhallaMMO.logWarning("Could not generate recipe for " + getName() + ", it has no ingredients!");
-        if (shapeless != null) ValhallaMMO.getInstance().getServer().addRecipe(shapeless);
+        if (shapeless != null) Bukkit.addRecipe(shapeless);
     }
 
     @Override
     public void unregisterRecipe() {
-        if (ValhallaMMO.getInstance().getServer().getRecipe(shapedKey) != null) ValhallaMMO.getInstance().getServer().removeRecipe(shapedKey);
-        if (ValhallaMMO.getInstance().getServer().getRecipe(shapelessKey) != null) ValhallaMMO.getInstance().getServer().removeRecipe(shapelessKey);
+        if (Bukkit.getRecipe(shapedKey) != null) Bukkit.removeRecipe(shapedKey);
+        if (Bukkit.getRecipe(shapelessKey) != null) Bukkit.removeRecipe(shapelessKey);
     }
 
     public ToolRequirement getToolRequirement() { return toolRequirement; }

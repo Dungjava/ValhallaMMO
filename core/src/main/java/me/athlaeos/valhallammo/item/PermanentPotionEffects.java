@@ -6,6 +6,8 @@ import me.athlaeos.valhallammo.playerstats.EntityCache;
 import me.athlaeos.valhallammo.playerstats.EntityProperties;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.version.PotionEffectMappings;
+
+import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -29,9 +31,9 @@ public class PermanentPotionEffects {
     private static final Collection<UUID> entitiesWithPermanentEffects = new HashSet<>();
 
     public static void initializeRunnable(){
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskTimer(ValhallaMMO.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskTimer(ValhallaMMO.getInstance(), () -> {
             for (UUID uuid : new HashSet<>(entitiesWithPermanentEffects)){
-                Entity e = ValhallaMMO.getInstance().getServer().getEntity(uuid);
+                Entity e = Bukkit.getEntity(uuid);
                 if (e == null || !e.isValid() || e.isDead() || !(e instanceof LivingEntity l) || (e instanceof Player p && !p.isOnline())) {
                     entitiesWithPermanentEffects.remove(uuid);
                     continue;

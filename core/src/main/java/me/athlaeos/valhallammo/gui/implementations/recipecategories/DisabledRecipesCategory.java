@@ -15,6 +15,8 @@ import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import me.athlaeos.valhallammo.version.ConventionUtils;
 import me.athlaeos.valhallammo.version.SmithingTransformRecipeWrapper;
+
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Keyed;
 import org.bukkit.Material;
@@ -37,7 +39,7 @@ public class DisabledRecipesCategory extends RecipeCategory{
     @Override
     public List<ItemStack> getRecipeButtons() {
         List<ItemStack> icons = new ArrayList<>();
-        Iterator<Recipe> recipes = ValhallaMMO.getInstance().getServer().recipeIterator();
+        Iterator<Recipe> recipes = Bukkit.recipeIterator();
         while (recipes.hasNext()){
             Recipe recipe = recipes.next();
             if (!(recipe instanceof Keyed k) || ItemUtils.isEmpty(recipe.getResult())) continue;

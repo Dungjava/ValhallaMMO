@@ -8,6 +8,8 @@ import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile
 import me.athlaeos.valhallammo.utility.SideBarUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
+
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -17,9 +19,9 @@ import java.util.stream.Collectors;
 public class CustomEffectSidebarDisplay implements CustomEffectDisplay{
     @Override
     public void start() {
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskTimer(ValhallaMMO.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskTimer(ValhallaMMO.getInstance(), () -> {
             for (UUID uuid : new HashSet<>(PotionEffectRegistry.affectedEntityTracker())){
-                Entity e = ValhallaMMO.getInstance().getServer().getEntity(uuid);
+                Entity e = Bukkit.getEntity(uuid);
                 if (!(e instanceof Player p)) continue;
                 if (!e.isValid()){
                     PotionEffectRegistry.affectedEntityTracker().remove(e.getUniqueId());

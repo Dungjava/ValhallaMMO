@@ -15,6 +15,8 @@ import me.athlaeos.valhallammo.playerstats.profiles.implementations.FarmingProfi
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.utility.*;
 import me.athlaeos.valhallammo.utility.Timer;
+
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -45,7 +47,6 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
-import java.util.List;
 
 import static me.athlaeos.valhallammo.utility.Utils.oldOrNew;
 
@@ -161,7 +162,7 @@ public class FarmingSkill extends Skill implements Listener {
             ValhallaMMO.logWarning(String.join(", ", invalidEntities));
         }
 
-        ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(this, ValhallaMMO.getInstance());
+        Bukkit.getPluginManager().registerEvents(this, ValhallaMMO.getInstance());
     }
 
     private final Collection<UUID> fieldHarvestingPlayers = new HashSet<>();
@@ -238,7 +239,7 @@ public class FarmingSkill extends Skill implements Listener {
             }
         }
         if (clickedBlock.getBlockData() instanceof Beehive b && b.getHoneyLevel() >= b.getMaximumHoneyLevel()) {
-            ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+            Bukkit.getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
                 if (b.getHoneyLevel() < b.getMaximumHoneyLevel()){
                     // hive is empty after 5 ticks, so it can be assumed it was harvested
                     if (blockInteractExpValues.containsKey(clickedBlock.getType())) {

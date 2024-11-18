@@ -69,7 +69,7 @@ public class LootListener implements Listener {
     private static final Map<Location, UUID> blockBreakerMap = new HashMap<>();
 
     public LootListener(){
-        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20)) ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(new ArchaeologyListener(), ValhallaMMO.getInstance());
+        if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20)) Bukkit.getPluginManager().registerEvents(new ArchaeologyListener(), ValhallaMMO.getInstance());
     }
 
     public static void setResponsibleBreaker(Block block, Player breaker){
@@ -146,7 +146,7 @@ public class LootListener implements Listener {
 
         UUID uuid = blockBreakerMap.get(e.getBlock().getLocation());
         blockBreakerMap.remove(e.getBlock().getLocation());
-        Player p = uuid == null ? null : ValhallaMMO.getInstance().getServer().getPlayer(uuid);
+        Player p = uuid == null ? null : Bukkit.getPlayer(uuid);
         Pair<Double, Integer> details = getFortuneAndLuck(p, e.getBlock());
         int fortune = details.getTwo();
         double luck = details.getOne();
@@ -177,7 +177,7 @@ public class LootListener implements Listener {
 
         UUID uuid = blockBreakerMap.get(e.getBlock().getLocation());
         blockBreakerMap.remove(e.getBlock().getLocation());
-        Player p = uuid == null ? null : ValhallaMMO.getInstance().getServer().getPlayer(uuid);
+        Player p = uuid == null ? null : Bukkit.getPlayer(uuid);
         Pair<Double, Integer> details = getFortuneAndLuck(p, e.getBlock());
         int fortune = details.getTwo();
         double luck = details.getOne();
@@ -211,7 +211,7 @@ public class LootListener implements Listener {
 
         UUID uuid = blockBreakerMap.get(e.getBlock().getLocation());
         blockBreakerMap.remove(e.getBlock().getLocation());
-        Player p = uuid == null ? null : ValhallaMMO.getInstance().getServer().getPlayer(uuid);
+        Player p = uuid == null ? null : Bukkit.getPlayer(uuid);
         if (p == null) p = (Player) e.getBlock().getWorld().getNearbyEntities(e.getBlock().getLocation(), 20, 20, 20, en -> en instanceof Player).stream().findFirst().orElse(null);
         Pair<Double, Integer> details = getFortuneAndLuck(p, e.getBlock());
         int fortune = details.getTwo();
@@ -262,7 +262,7 @@ public class LootListener implements Listener {
 
         UUID uuid = blockBreakerMap.get(e.getBlock().getLocation());
         blockBreakerMap.remove(e.getBlock().getLocation());
-        Player p = uuid == null ? null : ValhallaMMO.getInstance().getServer().getPlayer(uuid);
+        Player p = uuid == null ? null : Bukkit.getPlayer(uuid);
         Pair<Double, Integer> details = getFortuneAndLuck(p, e.getBlock());
         int fortune = details.getTwo();
         double luck = details.getOne();
@@ -359,7 +359,7 @@ public class LootListener implements Listener {
         if (ValhallaMMO.isWorldBlacklisted(e.getEntity().getWorld().getName()) || e.isCancelled()) return;
         Optional<MetadataValue> uuidMeta = e.getEntity().getMetadata("valhalla_entity_owner").stream().findAny();
         UUID uuid = uuidMeta.map(metadataValue -> UUID.fromString(metadataValue.asString())).orElse(null);
-        Entity owner = uuid == null ? null : ValhallaMMO.getInstance().getServer().getEntity(uuid);
+        Entity owner = uuid == null ? null : Bukkit.getEntity(uuid);
 
         AttributeInstance luckInstance = owner instanceof LivingEntity l ? l.getAttribute(Attribute.GENERIC_LUCK) : null;
         double luck = luckInstance == null ? 0 : luckInstance.getValue();
@@ -387,7 +387,7 @@ public class LootListener implements Listener {
         if (e.isCancelled()) return;
         Optional<MetadataValue> uuidMeta = e.getEntity().getMetadata("valhalla_entity_owner").stream().findAny();
         UUID uuid = uuidMeta.map(metadataValue -> UUID.fromString(metadataValue.asString())).orElse(null);
-        Entity owner = uuid == null ? null : ValhallaMMO.getInstance().getServer().getEntity(uuid);
+        Entity owner = uuid == null ? null : Bukkit.getEntity(uuid);
 
         List<Block> blocks = new ArrayList<>(e.blockList());
         blocks.addAll(explodedBlocks.keySet().stream().map(Location::getBlock).toList());
@@ -417,7 +417,7 @@ public class LootListener implements Listener {
      */
     private boolean onBlockDestruction(Block b, LootContext context, BlockDestructionInfo info, BlockDestructionEvent.BlockDestructionReason reason){
         BlockDestructionEvent destroyEvent = new BlockDestructionEvent(b, info, reason);
-        ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(destroyEvent);
+        Bukkit.getPluginManager().callEvent(destroyEvent);
         Material originalMaterial = explodedBlocks.getOrDefault(b.getLocation(), b.getType());
         explodedBlocks.remove(b.getLocation());
         if (!destroyEvent.getInfo().isCancelled(info.getEvent())){
@@ -427,7 +427,7 @@ public class LootListener implements Listener {
             List<ItemStack> generatedLoot = LootTableRegistry.getLoot(table, context, LootTable.LootType.BREAK);
 
             ValhallaLootPopulateEvent loottableEvent = new ValhallaLootPopulateEvent(table, context, generatedLoot);
-            ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(loottableEvent);
+            Bukkit.getPluginManager().callEvent(loottableEvent);
             if (!loottableEvent.isCancelled()){
                 prepareBlockDrops(b, loottableEvent.getDrops());
                 return switch (loottableEvent.getPreservationType()){
@@ -469,7 +469,7 @@ public class LootListener implements Listener {
             LootTableRegistry.setLootTable(b, null);
             List<ItemStack> loot = LootTableRegistry.getLoot(table, context, LootTable.LootType.CONTAINER);
             ValhallaLootPopulateEvent loottableEvent = new ValhallaLootPopulateEvent(table, context, loot);
-            ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(loottableEvent);
+            Bukkit.getPluginManager().callEvent(loottableEvent);
             if (!loottableEvent.isCancelled()){
                 boolean skip = false;
                 switch (loottableEvent.getPreservationType()){
@@ -506,7 +506,7 @@ public class LootListener implements Listener {
         ReplacementTable replacementTable = LootTableRegistry.getReplacementTable(lootTable.getKey());
         ReplacementTable globalTable = LootTableRegistry.getGlobalReplacementTable();
         ValhallaLootReplacementEvent event = new ValhallaLootReplacementEvent(replacementTable, context);
-        if (replacementTable != null) ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+        if (replacementTable != null) Bukkit.getPluginManager().callEvent(event);
         if (replacementTable == null || !event.isCancelled()){
             for (int i = 0; i < c.getInventory().getSize(); i++){
                 ItemStack item = c.getInventory().getItem(i);
@@ -574,7 +574,7 @@ public class LootListener implements Listener {
 //        if (ValhallaMMO.isWorldBlacklisted(e.getWhoClicked().getWorld().getName()) || e.isCancelled() || !(e.getInventory().getHolder() instanceof Entity en)) return;
 //        Map<Integer, ItemStack> trades = getTrades(en);
 //
-//        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+//        Bukkit.getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
 //            if (trades.containsKey(e.getIndex())) {
 //                e.getInventory().setItem(2, trades.get(e.getIndex()));
 //            } else {
@@ -586,7 +586,7 @@ public class LootListener implements Listener {
 //
 //                ReplacementTable globalTable = LootTableRegistry.getGlobalReplacementTable();
 //                ValhallaLootReplacementEvent event = new ValhallaLootReplacementEvent(globalTable, context);
-//                ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+//                Bukkit.getPluginManager().callEvent(event);
 //                if (!event.isCancelled()){
 //                    System.out.println("going for replacement on " + result.getType());
 //                    ItemStack globalReplacement = LootTableRegistry.getReplacement(globalTable, context, LootTable.LootType.VILLAGER, result);
@@ -631,7 +631,7 @@ public class LootListener implements Listener {
         if (table != null) {
             List<ItemStack> loot = LootTableRegistry.getLoot(table, context, LootTable.LootType.CONTAINER);
             ValhallaLootPopulateEvent loottableEvent = new ValhallaLootPopulateEvent(table, context, loot);
-            ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(loottableEvent);
+            Bukkit.getPluginManager().callEvent(loottableEvent);
             if (!loottableEvent.isCancelled()){
                 boolean skip = false;
                 switch (loottableEvent.getPreservationType()){
@@ -666,7 +666,7 @@ public class LootListener implements Listener {
         ReplacementTable replacementTable = LootTableRegistry.getReplacementTable(l.getLootTable().getKey());
         ReplacementTable globalTable = LootTableRegistry.getGlobalReplacementTable();
         ValhallaLootReplacementEvent event = new ValhallaLootReplacementEvent(replacementTable, context);
-        if (replacementTable != null) ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+        if (replacementTable != null) Bukkit.getPluginManager().callEvent(event);
         if (replacementTable == null || !event.isCancelled()){
             for (int i = 0; i < c.getInventory().getSize(); i++){
                 ItemStack item = c.getInventory().getItem(i);
@@ -736,7 +736,7 @@ public class LootListener implements Listener {
         } else {
             List<ItemStack> loot = LootTableRegistry.getLoot(table, context, LootTable.LootType.CONTAINER);
             ValhallaLootPopulateEvent loottableEvent = new ValhallaLootPopulateEvent(table, context, loot);
-            ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(loottableEvent);
+            Bukkit.getPluginManager().callEvent(loottableEvent);
             if (!loottableEvent.isCancelled()){
                 loottableEvent.getDrops().forEach(i -> ItemUtils.addItem(e.getPlayer(), i, true));
 
@@ -785,7 +785,7 @@ public class LootListener implements Listener {
 //            if (recipe == null) continue; // no valhalla recipe found, drop is probably fine as is
 //            FurnaceRecipe vanillaRecipe = fireDropFixerVanillaRecipeCache.get(item.getType());
 //            if (vanillaRecipe == null){
-//                Iterator<Recipe> recipeIterator = ValhallaMMO.getInstance().getServer().recipeIterator();
+//                Iterator<Recipe> recipeIterator = Bukkit.recipeIterator();
 //                while (recipeIterator.hasNext()){
 //                    // now we go through vanilla recipes to figure out which vanilla recipe should be used to cook the normal drop
 //                    if (!(recipeIterator.next() instanceof FurnaceRecipe f)) continue;
@@ -850,7 +850,7 @@ public class LootListener implements Listener {
             List<ItemStack> loot = LootTableRegistry.getLoot(table, context, LootTable.LootType.KILL);
             realKiller.remove(entity.getUniqueId());
             ValhallaLootPopulateEvent loottableEvent = new ValhallaLootPopulateEvent(table, context, loot);
-            ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(loottableEvent);
+            Bukkit.getPluginManager().callEvent(loottableEvent);
             if (!loottableEvent.isCancelled()){
                 boolean skip = false;
                 switch (loottableEvent.getPreservationType()){
@@ -870,7 +870,7 @@ public class LootListener implements Listener {
         ReplacementTable replacementTable = LootTableRegistry.getReplacementTable(e.getEntityType());
         ReplacementTable globalTable = LootTableRegistry.getGlobalReplacementTable();
         ValhallaLootReplacementEvent event = new ValhallaLootReplacementEvent(replacementTable, context);
-        if (replacementTable != null) ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+        if (replacementTable != null) Bukkit.getPluginManager().callEvent(event);
         if (replacementTable == null || !event.isCancelled()){
             for (int i = 0; i < e.getDrops().size(); i++){
                 ItemStack item = e.getDrops().get(i);
@@ -905,7 +905,7 @@ public class LootListener implements Listener {
         ReplacementTable replacementTable = LootTableRegistry.getReplacementTable(e.getEntityType());
         ReplacementTable globalTable = LootTableRegistry.getGlobalReplacementTable();
         ValhallaLootReplacementEvent event = new ValhallaLootReplacementEvent(replacementTable, context);
-        if (replacementTable != null) ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+        if (replacementTable != null) Bukkit.getPluginManager().callEvent(event);
         if (replacementTable == null || !event.isCancelled()){
             for (int i = 0; i < equipment.length; i++){
                 ItemStack item = equipment[i];
@@ -929,7 +929,7 @@ public class LootListener implements Listener {
     private static final Map<UUID, UUID> realKiller = new HashMap<>();
     public static Entity getRealKiller(Entity victim){
         UUID killer = realKiller.get(victim.getUniqueId());
-        return killer == null ? null : ValhallaMMO.getInstance().getServer().getEntity(killer);
+        return killer == null ? null : Bukkit.getEntity(killer);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -947,7 +947,7 @@ public class LootListener implements Listener {
         ReplacementTable replacementTable = LootTableRegistry.getReplacementTable(e.getBlockState().getType());
         ReplacementTable globalTable = LootTableRegistry.getGlobalReplacementTable();
         ValhallaLootReplacementEvent event = new ValhallaLootReplacementEvent(replacementTable, context);
-        if (replacementTable != null) ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+        if (replacementTable != null) Bukkit.getPluginManager().callEvent(event);
         if (replacementTable == null || !event.isCancelled()){
             List<ItemStack> drops = preparedBlockDrops.getOrDefault(e.getBlock().getLocation(), new ArrayList<>());
             for (int i = 0; i < drops.size(); i++){
@@ -986,7 +986,7 @@ public class LootListener implements Listener {
     }
 
     public static void clear(Block b){
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
             transferToInventory.remove(b.getLocation());
             preparedBlockDrops.remove(b.getLocation());
             preparedLuckBuffs.remove(b.getLocation());
@@ -1024,7 +1024,7 @@ public class LootListener implements Listener {
 
             List<ItemStack> loot = LootTableRegistry.getLoot(table, context, LootTable.LootType.PIGLIN_BARTER);
             ValhallaLootPopulateEvent loottableEvent = new ValhallaLootPopulateEvent(table, context, loot);
-            ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(loottableEvent);
+            Bukkit.getPluginManager().callEvent(loottableEvent);
             if (!loottableEvent.isCancelled()){
                 boolean skip = false;
                 switch (loottableEvent.getPreservationType()){
@@ -1043,7 +1043,7 @@ public class LootListener implements Listener {
         ReplacementTable replacementTable = LootTableRegistry.getReplacementTable(LootTables.PIGLIN_BARTERING);
         ReplacementTable globalTable = LootTableRegistry.getGlobalReplacementTable();
         ValhallaLootReplacementEvent event = new ValhallaLootReplacementEvent(replacementTable, context);
-        if (replacementTable != null) ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+        if (replacementTable != null) Bukkit.getPluginManager().callEvent(event);
         if (replacementTable == null || !event.isCancelled()){
             for (int i = 0; i < e.getOutcome().size(); i++){
                 ItemStack item = e.getOutcome().get(i);

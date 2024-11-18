@@ -1,6 +1,8 @@
 package me.athlaeos.valhallammo.utility;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+
+import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
@@ -61,7 +63,7 @@ public class BossBarUtils {
             this.text = text;
             this.p = p;
             this.skillType = skillType;
-            this.bossBar = ValhallaMMO.getInstance().getServer().createBossBar(text, color, style);
+            this.bossBar = Bukkit.createBossBar(text, color, style);
         }
 
         @Override

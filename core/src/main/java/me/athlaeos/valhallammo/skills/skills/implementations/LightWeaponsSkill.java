@@ -29,6 +29,8 @@ import me.athlaeos.valhallammo.utility.Bleeder;
 import me.athlaeos.valhallammo.utility.EntityUtils;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Timer;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
@@ -84,7 +86,7 @@ public class LightWeaponsSkill extends Skill implements Listener {
         spawnerMultiplier = progressionConfig.getDouble("experience.spawner_spawned_multiplier");
         maceExpMultiplier = progressionConfig.getDouble("experience.mace_exp_multiplier");
 
-        ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(this, ValhallaMMO.getInstance());
+        Bukkit.getPluginManager().registerEvents(this, ValhallaMMO.getInstance());
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -155,7 +157,7 @@ public class LightWeaponsSkill extends Skill implements Listener {
             ItemBuilder weapon = damager instanceof Trident t ? new ItemBuilder(t.getItem()) : EntityCache.getAndCacheProperties(p).getMainHand();
             if (weapon == null || WeightClass.getWeightClass(weapon.getMeta()) != WeightClass.LIGHT) return;
 
-            ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+            Bukkit.getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
                 if (e.isCancelled() || !p.isOnline()) return;
                 double chunkNerf = ChunkEXPNerf.getChunkEXPNerf(l.getLocation().getChunk(), p, "weapons");
                 double entityExpMultiplier = entityExpMultipliers.getOrDefault(l.getType(), 1D);

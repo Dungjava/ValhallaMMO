@@ -14,6 +14,8 @@ import me.athlaeos.valhallammo.utility.BlockStore;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -200,7 +202,7 @@ public class DiggingArchaeologyExtension implements Listener {
         LootTable previousTable = ArchaeologyListener.getSuspiciousLootTables().get(e.getBlock());
         if (previousTable == null) return;
 
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
             e.getBlock().setType(previousMaterial);
             b.setLootTable(previousTable);
             b.update();

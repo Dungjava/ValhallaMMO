@@ -11,6 +11,8 @@ import me.athlaeos.valhallammo.playerstats.profiles.implementations.MiningProfil
 import me.athlaeos.valhallammo.utility.BlockUtils;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Timer;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -50,9 +52,9 @@ public class BlockDigProcess {
         blocksToBreakInstantly.put(by.getUniqueId(), block.getLocation());
         if (instantBlockBreakerTask != null && !done) return;
         done = false;
-        instantBlockBreakerTask = ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
+        instantBlockBreakerTask = Bukkit.getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
             new HashSet<>(blocksToBreakInstantly.entrySet()).forEach(e -> {
-                Player p = ValhallaMMO.getInstance().getServer().getPlayer(e.getKey());
+                Player p = Bukkit.getPlayer(e.getKey());
                 if (p == null || !p.isOnline()){
                     blocksToBreakInstantly.remove(e.getKey());
                     return;
@@ -95,7 +97,7 @@ public class BlockDigProcess {
     }
 
     public static void sendCracks(Block block, int cracks){
-        ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
+        Bukkit.getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
             for (Entity p : block.getWorld().getNearbyEntities(block.getLocation(), 20, 20, 20, (e) -> e instanceof Player))
                 ValhallaMMO.getNms().blockBreakAnimation((Player) p, block, getID(block), cracks);
         });

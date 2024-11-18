@@ -17,6 +17,8 @@ import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Timer;
 import me.athlaeos.valhallammo.utility.Utils;
+
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -391,7 +393,7 @@ public class PartyManager {
         if (party.getLeader().equals(kicker.getUniqueId()) || kickedRank == null || kickedRank.rating < kickerRank.rating){
             party.getMembers().remove(kicked);
             partiesByMember.remove(kicked);
-            Player k = ValhallaMMO.getInstance().getServer().getPlayer(kicked);
+            Player k = Bukkit.getPlayer(kicked);
             if (k != null) Utils.sendMessage(k, TranslationManager.getTranslation("status_command_party_member_kicked"));
             return null;
         }
@@ -406,7 +408,7 @@ public class PartyManager {
         if (!kicker.hasPermission("valhalla.manageparties")) return ErrorStatus.NO_PERMISSION;
         kickedParty.getMembers().remove(kicked);
         partiesByMember.remove(kicked);
-        Player k = ValhallaMMO.getInstance().getServer().getPlayer(kicked);
+        Player k = Bukkit.getPlayer(kicked);
         if (k != null) Utils.sendMessage(k, TranslationManager.getTranslation("status_command_party_member_kicked"));
         return null;
     }
@@ -423,11 +425,11 @@ public class PartyManager {
         if (!enabledParties) return ErrorStatus.PARTIES_DISABLED;
         for (UUID uuid : party.getMembers().keySet()){
             partiesByMember.remove(uuid);
-            Player online = ValhallaMMO.getInstance().getServer().getPlayer(uuid);
+            Player online = Bukkit.getPlayer(uuid);
             if (online != null) Utils.sendMessage(online, TranslationManager.getTranslation("status_command_party_disbanded"));
         }
         partiesByMember.remove(party.getLeader());
-        Player online = ValhallaMMO.getInstance().getServer().getPlayer(party.getLeader());
+        Player online = Bukkit.getPlayer(party.getLeader());
         if (online != null) Utils.sendMessage(online, TranslationManager.getTranslation("status_command_party_disbanded"));
         allParties.remove(party.getId());
         return null;
@@ -768,9 +770,9 @@ public class PartyManager {
             enabledParties = false;
             return;
         }
-        ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(new PartyChatListener(), ValhallaMMO.getInstance());
-        ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(new PartyEXPGainListener(), ValhallaMMO.getInstance());
-        ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(new PartyPvPListener(), ValhallaMMO.getInstance());
+        Bukkit.getPluginManager().registerEvents(new PartyChatListener(), ValhallaMMO.getInstance());
+        Bukkit.getPluginManager().registerEvents(new PartyEXPGainListener(), ValhallaMMO.getInstance());
+        Bukkit.getPluginManager().registerEvents(new PartyPvPListener(), ValhallaMMO.getInstance());
 
         File f = new File(ValhallaMMO.getInstance().getDataFolder(), "/parties.json");
         try {

@@ -6,6 +6,8 @@ import me.athlaeos.valhallammo.gui.PlayerMenuUtilManager;
 import me.athlaeos.valhallammo.gui.implementations.SkillTreeMenu;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.utility.Utils;
+
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -19,7 +21,7 @@ public class ViewSkillTreeCommand implements Command {
 			return true;
 		}
 		if (args.length > 1){
-			Player target = ValhallaMMO.getInstance().getServer().getPlayer(args[1]);
+			Player target = Bukkit.getPlayer(args[1]);
 			if (target == null) {
 				Utils.sendMessage(sender, TranslationManager.getTranslation("error_command_player_offline"));
 				return true;

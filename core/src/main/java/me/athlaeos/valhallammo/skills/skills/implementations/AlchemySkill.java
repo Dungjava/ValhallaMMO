@@ -84,7 +84,7 @@ public class AlchemySkill extends Skill implements Listener {
             }
         }
 
-        ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(this, ValhallaMMO.getInstance());
+        Bukkit.getPluginManager().registerEvents(this, ValhallaMMO.getInstance());
     }
 
     @Override

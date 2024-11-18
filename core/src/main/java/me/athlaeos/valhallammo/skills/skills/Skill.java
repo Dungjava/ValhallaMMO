@@ -26,6 +26,8 @@ import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
+
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.boss.BarColor;
@@ -467,7 +469,7 @@ public abstract class Skill {
         if (isExperienceScaling()) amount *= (1 + AccumulativeStatManager.getStats("GLOBAL_EXP_GAIN", p, true));
 
         PlayerSkillExperienceGainEvent event = new PlayerSkillExperienceGainEvent(p, amount, this, reason);
-        ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+        Bukkit.getPluginManager().callEvent(event);
         if (!event.isCancelled()) {
             if (event.getAmount() == 0) return;
 
@@ -614,8 +616,8 @@ public abstract class Skill {
             for (int i = from - 1; i >= to; i--) {
                 if (specialLevelingUndoCommands.containsKey(i)) {
                     for (String command : specialLevelingUndoCommands.get(i)) {
-                        ValhallaMMO.getInstance().getServer().dispatchCommand(
-                                ValhallaMMO.getInstance().getServer().getConsoleSender(),
+                        Bukkit.dispatchCommand(
+                                Bukkit.getConsoleSender(),
                                 command.replace("%player%", p.getName())
                         );
                     }
@@ -623,13 +625,13 @@ public abstract class Skill {
             }
 
             for (String command : levelingUndoCommands) {
-                ValhallaMMO.getInstance().getServer().dispatchCommand(
-                        ValhallaMMO.getInstance().getServer().getConsoleSender(),
+                Bukkit.dispatchCommand(
+                        Bukkit.getConsoleSender(),
                         command.replace("%player%", p.getName())
                 );
             }
 
-            ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
+            Bukkit.getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
                 for (int i = from; i > to; i--) {
                     for (PerkReward reward : levelingPerks) {
                         if (reward instanceof MultiplicativeReward || reward.isPersistent()) continue;
@@ -677,16 +679,16 @@ public abstract class Skill {
                 }
                 if (specialLevelingCommands.containsKey(i)) {
                     for (String command : specialLevelingCommands.get(i)) {
-                        ValhallaMMO.getInstance().getServer().dispatchCommand(
-                                ValhallaMMO.getInstance().getServer().getConsoleSender(),
+                        Bukkit.dispatchCommand(
+                                Bukkit.getConsoleSender(),
                                 command.replace("%player%", p.getName())
                         );
                     }
                 }
 
                 for (String command : levelingCommands) {
-                    ValhallaMMO.getInstance().getServer().dispatchCommand(
-                            ValhallaMMO.getInstance().getServer().getConsoleSender(),
+                    Bukkit.dispatchCommand(
+                            Bukkit.getConsoleSender(),
                             command.replace("%player%", p.getName())
                     );
                 }
@@ -698,7 +700,7 @@ public abstract class Skill {
                 }
             }
 
-            ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
+            Bukkit.getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
                 for (int i = from + 1; i <= to; i++) {
                     for (PerkReward reward : levelingPerks) {
                         if (reward instanceof MultiplicativeReward) continue;
@@ -719,7 +721,7 @@ public abstract class Skill {
                 }
             });
         }
-        ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(new PlayerSkillLevelUpEvent(p, this, from, to));
+        Bukkit.getPluginManager().callEvent(new PlayerSkillLevelUpEvent(p, this, from, to));
     }
 
     public void updateSkillStats(Player p, boolean runPersistentStartingPerks) {
@@ -768,7 +770,7 @@ public abstract class Skill {
                     reward.apply(p);
                 }
                 if (!perk.getExpenses().isEmpty()){
-                    ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
+                    Bukkit.getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
                         for (ResourceExpense expense : perk.getExpenses()) {
                             expense.purchase(p, false);
                         }
@@ -777,8 +779,8 @@ public abstract class Skill {
             }
         }
 
-        ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () ->
-                ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(new ValhallaUpdatedStatsEvent(p, skillProfile.getClass())));
+        Bukkit.getScheduler().runTask(ValhallaMMO.getInstance(), () ->
+                Bukkit.getPluginManager().callEvent(new ValhallaUpdatedStatsEvent(p, skillProfile.getClass())));
     }
 
     private final boolean perksForgettable = ConfigManager.getConfig("config.yml").reload().get().getBoolean("forgettable_perks");

@@ -3,6 +3,8 @@ package me.athlaeos.valhallammo.resourcepack;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.utility.Zipper;
+
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.io.BufferedInputStream;
@@ -66,7 +68,7 @@ public class ResourcePack {
     public static void tryStart(){
         if (Host.start()){
             if (ResourcePack.generate()){
-                ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(new ResourcePackListener(), ValhallaMMO.getInstance());
+                Bukkit.getPluginManager().registerEvents(new ResourcePackListener(), ValhallaMMO.getInstance());
             }
         } else if (!ValhallaMMO.isResourcePackConfigForced()) {
             ValhallaMMO.logWarning("No valid host for the resource pack configured! You may ignore this warning if you've not set up the resource pack.");

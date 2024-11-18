@@ -15,6 +15,8 @@ import me.athlaeos.valhallammo.utility.BlockUtils;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import me.athlaeos.valhallammo.version.BrewingPreventionListener;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BrewingStand;
@@ -42,7 +44,7 @@ public class BrewingStandListener implements Listener {
 
     public BrewingStandListener(){
         if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20))
-            ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(new BrewingPreventionListener(), ValhallaMMO.getInstance());
+            Bukkit.getPluginManager().registerEvents(new BrewingPreventionListener(), ValhallaMMO.getInstance());
     }
 
     @EventHandler
@@ -123,7 +125,7 @@ public class BrewingStandListener implements Listener {
     }
 
     private void updateStand(BrewerInventory inventory, Player p){
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
             ItemStack i = inventory.getItem(ingredient);
             ActiveBrewingStand activeStand = activeStands.get(inventory.getLocation());
             if (ItemUtils.isEmpty(i)) {
@@ -215,7 +217,7 @@ public class BrewingStandListener implements Listener {
                 ItemBuilder result = (recipe.tinker() ? new ItemBuilder(slotItem) : new ItemBuilder(recipe.getResult()));
                 DynamicItemModifier.modify(result, p, recipe.getModifiers(), false, true, true);
                 PlayerCustomBrewEvent event = new PlayerCustomBrewEvent(p, recipe, result.get(), stand, ItemUtils.isEmpty(result.getItem()) && !CustomFlag.hasFlag(result.getMeta(), CustomFlag.UNCRAFTABLE));
-                ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+                Bukkit.getPluginManager().callEvent(event);
                 if (!event.isCancelled()) results[slot] = event.getResult();
             }
 

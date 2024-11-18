@@ -11,6 +11,8 @@ import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.playerstats.EntityCache;
 import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.version.PotionEffectMappings;
+
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -635,7 +637,7 @@ public class PotionEffectRegistry {
         Map<String, CustomPotionEffect> currentEffects = getActiveEffects(e);
 
         EntityCustomPotionEffectEvent event = new EntityCustomPotionEffectEvent(e, currentEffects.get(effect.getWrapper().getEffect()), effect, cause, action, force);
-        ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+        Bukkit.getPluginManager().callEvent(event);
         if (!event.isCancelled()){
             CustomPotionEffect newEffect = event.getNewEffect();
             if (newEffect.getWrapper().isInstant()){

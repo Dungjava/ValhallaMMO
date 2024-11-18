@@ -13,6 +13,8 @@ import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 import me.athlaeos.valhallammo.utility.Utils;
+
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -120,7 +122,7 @@ public class SQL extends ProfilePersistence implements Database, LeaderboardComp
         if (persistentProfiles.containsKey(p.getUniqueId())) return; // stats are presumably already loaded in and so they do not
         // need to be loaded in from the database again
         Database database = this;
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
             boolean runPersistentStartingPerks = false;
             Map<Class<? extends Profile>, Profile> profs = persistentProfiles.getOrDefault(p.getUniqueId(), new HashMap<>());
             for (Profile pr : ProfileRegistry.getRegisteredProfiles().values()){
@@ -148,12 +150,12 @@ public class SQL extends ProfilePersistence implements Database, LeaderboardComp
     public void saveAllProfiles() {
         for (UUID p : new HashSet<>(persistentProfiles.keySet())){
             if (!persistentProfiles.containsKey(p)) continue;
-            Player player = ValhallaMMO.getInstance().getServer().getPlayer(p);
+            Player player = Bukkit.getPlayer(p);
             for (Profile profile : persistentProfiles.getOrDefault(p, new HashMap<>()).values()){
                 try {
                     profile.insertOrUpdateProfile(this);
                 } catch (SQLException e){
-                    ValhallaMMO.getInstance().getServer().getLogger().severe("SQLException when trying to save profile for profile type " + profile.getClass().getName() + ". ");
+                    Bukkit.getLogger().severe("SQLException when trying to save profile for profile type " + profile.getClass().getName() + ". ");
                     e.printStackTrace();
                 }
             }
@@ -164,12 +166,12 @@ public class SQL extends ProfilePersistence implements Database, LeaderboardComp
     @Override
     public void saveProfile(Player p) {
         if (persistentProfiles.containsKey(p.getUniqueId())){
-            ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
+            Bukkit.getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
                 for (Profile profile : persistentProfiles.getOrDefault(p.getUniqueId(), new HashMap<>()).values()){
                     try {
                         profile.insertOrUpdateProfile(this);
                     } catch (SQLException e){
-                        ValhallaMMO.getInstance().getServer().getLogger().severe("SQLException when trying to save profile for profile type " + profile.getClass().getName() + ". ");
+                        Bukkit.getLogger().severe("SQLException when trying to save profile for profile type " + profile.getClass().getName() + ". ");
                         e.printStackTrace();
                     }
                 }
@@ -204,7 +206,7 @@ public class SQL extends ProfilePersistence implements Database, LeaderboardComp
             while (set.next()){
                 double value = set.getDouble("main_stat");
                 UUID uuid = UUID.fromString(set.getString("owner"));
-                OfflinePlayer player = ValhallaMMO.getInstance().getServer().getOfflinePlayer(uuid);
+                OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
                 Map<String, Double> extraStat = new HashMap<>();
                 for (String e : leaderboard.extraStats().values()) extraStat.put(e, set.getDouble(e));
                 entries.put(rank, new LeaderboardEntry(player.getName(), player.getUniqueId(), value, rank, extraStat));

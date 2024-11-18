@@ -7,7 +7,6 @@ import me.athlaeos.valhallammo.configuration.ConfigManager;
 import me.athlaeos.valhallammo.dom.Catch;
 import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
-import me.athlaeos.valhallammo.item.EnchantmentClassification;
 import me.athlaeos.valhallammo.event.PlayerSkillExperienceGainEvent;
 import me.athlaeos.valhallammo.item.*;
 import me.athlaeos.valhallammo.listeners.EntityDamagedListener;
@@ -19,6 +18,8 @@ import me.athlaeos.valhallammo.playerstats.profiles.implementations.EnchantingPr
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.utility.*;
 import me.athlaeos.valhallammo.utility.Timer;
+
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -135,7 +136,7 @@ public class EnchantingSkill extends Skill implements Listener {
         elementalHitAnimation.put("POISON", AnimationRegistry.HIT_POISON);
         elementalHitAnimation.put("RADIANT", AnimationRegistry.HIT_RADIANT);
 
-        ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(this, ValhallaMMO.getInstance());
+        Bukkit.getPluginManager().registerEvents(this, ValhallaMMO.getInstance());
     }
 
     public static void setElementalHit(String damageType, Animation animation){
@@ -313,7 +314,7 @@ public class EnchantingSkill extends Skill implements Listener {
         e.setDamage(e.getDamage() * (1 - conversion)); // damage is reduced by the fraction of it that is converted
 
         final boolean en = enhanced;
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
             for (String damageType : profile.getElementalDamageTypes()){
                 EntityUtils.damage(v, p, damagePerType, damageType);
                 if (en) {
@@ -348,7 +349,7 @@ public class EnchantingSkill extends Skill implements Listener {
             if (elementalBladeActivationAnimation != null) elementalBladeActivationAnimation.animate(e.getPlayer(), e.getPlayer().getLocation(), e.getPlayer().getEyeLocation().getDirection(), 0);
         }
         e.setCancelled(true);
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> e.getPlayer().updateInventory(), 1L);
+        Bukkit.getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> e.getPlayer().updateInventory(), 1L);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -438,7 +439,7 @@ public class EnchantingSkill extends Skill implements Listener {
             } else {
                 maxLevels = anvilMaxLevelCache.get(combiner.getUniqueId());
                 if (Timer.isCooldownPassed(combiner.getUniqueId(), "delay_anvil_cache_reset")){
-                    ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(
+                    Bukkit.getScheduler().runTaskLater(
                             ValhallaMMO.getInstance(),
                             () -> anvilMaxLevelCache.remove(combiner.getUniqueId()),
                             5L);

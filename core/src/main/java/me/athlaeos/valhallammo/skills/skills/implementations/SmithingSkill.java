@@ -11,6 +11,8 @@ import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.SmithingProfile;
 import me.athlaeos.valhallammo.skills.ChunkEXPNerf;
 import me.athlaeos.valhallammo.skills.skills.Skill;
+
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -52,7 +54,7 @@ public class SmithingSkill extends Skill implements Listener {
         this.durabilityChunkLimit = progressionConfig.getInt("experience.durability_chunk_limit", 50);
 
         loadCommonConfig(skillConfig, progressionConfig);
-        ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(this, ValhallaMMO.getInstance());
+        Bukkit.getPluginManager().registerEvents(this, ValhallaMMO.getInstance());
     }
 
     @Override

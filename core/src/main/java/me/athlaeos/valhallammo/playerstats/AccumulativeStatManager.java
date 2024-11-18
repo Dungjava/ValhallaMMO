@@ -480,7 +480,7 @@ public class AccumulativeStatManager {
             if (lastMapCleanup + 120000 < System.currentTimeMillis()){
                 // cleaning up map every 2 minutes
                 new HashSet<>(statCache.keySet()).stream().filter(u -> {
-                    Entity entity = ValhallaMMO.getInstance().getServer().getEntity(u);
+                    Entity entity = Bukkit.getEntity(u);
                     return entity == null || !entity.isValid();
                 }).forEach(statCache::remove);
                 lastMapCleanup = System.currentTimeMillis();

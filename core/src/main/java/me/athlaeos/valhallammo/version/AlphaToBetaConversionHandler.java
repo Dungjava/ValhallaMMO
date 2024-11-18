@@ -10,6 +10,8 @@ import me.athlaeos.valhallammo.version.conversion_dto.AlphaDatabaseAdapter;
 import me.athlaeos.valhallammo.version.conversion_dto.AlphaPDCAdapter;
 import me.athlaeos.valhallammo.version.conversion_dto.DatabaseConnection;
 import me.athlaeos.valhallammo.version.conversion_dto.Profile;
+
+import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.EventHandler;
@@ -74,7 +76,7 @@ public class AlphaToBetaConversionHandler implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void expConversion(PlayerJoinEvent e){
         if (expConversion <= 0 || e.getPlayer().getPersistentDataContainer().has(CONVERTED_FROM_ALPHA_KEY, PersistentDataType.BYTE)) return;
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
             if (!e.getPlayer().isOnline()) return;
             ValhallaMMO.logInfo("Player " + e.getPlayer().getName() + " had alpha data, converting to beta");
             for (String profileType : alphaKeyMappings.keySet()){

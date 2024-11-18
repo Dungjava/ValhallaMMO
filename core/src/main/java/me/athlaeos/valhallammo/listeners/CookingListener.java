@@ -21,6 +21,8 @@ import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile
 import me.athlaeos.valhallammo.item.SmithingItemPropertyManager;
 import me.athlaeos.valhallammo.utility.Timer;
 import me.athlaeos.valhallammo.version.FurnaceStartSmeltListener;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -51,7 +53,7 @@ public class CookingListener implements Listener {
 
     public CookingListener(){
         if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_18))
-            ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(new FurnaceStartSmeltListener(), ValhallaMMO.getInstance());
+            Bukkit.getPluginManager().registerEvents(new FurnaceStartSmeltListener(), ValhallaMMO.getInstance());
     }
 
     // owner is set to furnace on inventory click
@@ -377,7 +379,7 @@ public class CookingListener implements Listener {
         ItemStack clone = i.clone();
         clone.setAmount(1);
         if (campfireRecipeCache.containsKey(clone.toString())) return campfireRecipeCache.get(clone.toString());
-        Iterator<Recipe> iterator = ValhallaMMO.getInstance().getServer().recipeIterator();
+        Iterator<Recipe> iterator = Bukkit.recipeIterator();
         CampfireRecipe found = null;
         ItemMeta meta = ItemUtils.getItemMeta(clone);
         while (iterator.hasNext()){
@@ -409,7 +411,7 @@ public class CookingListener implements Listener {
         if (furnaceRecipeCache.get(clone.toString()) != null) return furnaceRecipeCache.get(clone.toString());
 
         ItemMeta meta = ItemUtils.getItemMeta(clone);
-        Iterator<Recipe> iterator = ValhallaMMO.getInstance().getServer().recipeIterator();
+        Iterator<Recipe> iterator = Bukkit.recipeIterator();
         CookingRecipe<?> found = null;
         while (iterator.hasNext()){
             Recipe next = iterator.next();

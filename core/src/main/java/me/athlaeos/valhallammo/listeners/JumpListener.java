@@ -8,6 +8,8 @@ import me.athlaeos.valhallammo.event.PlayerJumpEvent;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.utility.MathUtils;
 import me.athlaeos.valhallammo.version.PotionEffectMappings;
+
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -93,7 +95,7 @@ public class JumpListener implements Listener {
         double motionY = 0.42 + (jumpLevel * 0.1F);
         double motionZ = e.getPlayer().getVelocity().getZ() + (e.getPlayer().isSprinting() ? MathUtils.cos(f) * 0.2 : 0);
         if (multiJumpAnimation != null) multiJumpAnimation.animate(e.getPlayer(), e.getPlayer().getLocation(), e.getPlayer().getEyeLocation().getDirection(), 0);
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () ->
+        Bukkit.getScheduler().runTaskLater(ValhallaMMO.getInstance(), () ->
                 e.getPlayer().setVelocity(new Vector(motionX, motionY, motionZ).add(new Vector(0, (jumpHeightBonus * 0.1), 0))),
                 1L);
 
@@ -113,6 +115,6 @@ public class JumpListener implements Listener {
     }
 
     public static void onServerStop(){
-        for (Player p : ValhallaMMO.getInstance().getServer().getOnlinePlayers()) if (playersGivenFlight.contains(p.getUniqueId())) p.setAllowFlight(false);
+        for (Player p : Bukkit.getOnlinePlayers()) if (playersGivenFlight.contains(p.getUniqueId())) p.setAllowFlight(false);
     }
 }

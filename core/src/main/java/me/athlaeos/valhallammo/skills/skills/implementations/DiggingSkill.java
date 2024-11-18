@@ -13,6 +13,8 @@ import me.athlaeos.valhallammo.playerstats.profiles.implementations.DiggingProfi
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.utility.*;
 import me.athlaeos.valhallammo.version.DiggingArchaeologyExtension;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Container;
 import org.bukkit.configuration.ConfigurationSection;
@@ -67,9 +69,9 @@ public class DiggingSkill extends Skill implements Listener {
             ValhallaMMO.logWarning(String.join(", ", invalidMaterials));
         }
 
-        ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(this, ValhallaMMO.getInstance());
+        Bukkit.getPluginManager().registerEvents(this, ValhallaMMO.getInstance());
         if (MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20))
-            ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(new DiggingArchaeologyExtension(this), ValhallaMMO.getInstance());
+            Bukkit.getPluginManager().registerEvents(new DiggingArchaeologyExtension(this), ValhallaMMO.getInstance());
     }
 
     @EventHandler(priority = EventPriority.LOW)

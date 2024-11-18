@@ -1,6 +1,8 @@
 package me.athlaeos.valhallammo.playerstats.profiles;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -50,7 +52,7 @@ public class ProfileCache {
      */
     public static void cleanCache(){
         for (UUID uuid : new HashSet<>(cache.keySet())){
-            Player p = ValhallaMMO.getInstance().getServer().getPlayer(uuid);
+            Player p = Bukkit.getPlayer(uuid);
             if (p == null || !p.isOnline()) cache.remove(uuid);
         }
     }

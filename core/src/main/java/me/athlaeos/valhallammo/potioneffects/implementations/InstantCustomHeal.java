@@ -10,6 +10,8 @@ import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import me.athlaeos.valhallammo.version.ConventionUtils;
+
+import org.bukkit.Bukkit;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.LivingEntity;
@@ -61,7 +63,7 @@ public class InstantCustomHeal extends PotionEffectWrapper {
     @Override
     public void onInflict(LivingEntity p, LivingEntity causedBy, double amplifier, int duration, double intensity) {
         EntityRegainHealthEvent event = new EntityRegainHealthEvent(p, amplifier * intensity, EntityRegainHealthEvent.RegainReason.MAGIC_REGEN);
-        ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+        Bukkit.getPluginManager().callEvent(event);
         AttributeInstance healthInstance = p.getAttribute(Attribute.GENERIC_MAX_HEALTH);
         if (event.isCancelled() || healthInstance == null) return;
         p.setHealth(Math.min(healthInstance.getValue(), p.getHealth() + event.getAmount()));

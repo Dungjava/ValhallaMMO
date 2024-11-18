@@ -6,6 +6,8 @@ import me.athlaeos.valhallammo.playerstats.format.StatFormat;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.utility.Utils;
+
+import org.bukkit.Bukkit;
 import org.bukkit.command.*;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
@@ -26,7 +28,7 @@ public class ProfileCommand implements CommandExecutor {
                 Utils.sendMessage(sender, Utils.chat(TranslationManager.getTranslation("error_command_no_permission")));
                 return true;
             }
-            target = ValhallaMMO.getInstance().getServer().getPlayer(args[0]);
+            target = Bukkit.getPlayer(args[0]);
         } else if (sender instanceof Player){
             target = (Player) sender;
         } else {

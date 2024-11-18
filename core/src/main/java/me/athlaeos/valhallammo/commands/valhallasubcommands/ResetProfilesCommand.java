@@ -9,6 +9,8 @@ import me.athlaeos.valhallammo.playerstats.profiles.ResetType;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 import me.athlaeos.valhallammo.utility.Utils;
+
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -31,7 +33,7 @@ public class ResetProfilesCommand implements Command {
 				Utils.sendMessage(sender, Utils.chat(TranslationManager.getTranslation("error_command_no_permission")));
 				return true;
 			}
-			target = ValhallaMMO.getInstance().getServer().getPlayer(resetSingleSkill ? args[3] : args[2]);
+			target = Bukkit.getPlayer(resetSingleSkill ? args[3] : args[2]);
 		} else if (sender instanceof Player){
 			target = (Player) sender;
 		} else {

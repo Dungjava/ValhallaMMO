@@ -1,6 +1,8 @@
 package me.athlaeos.valhallammo.resourcepack;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
+
+import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.io.IOException;
@@ -46,7 +48,7 @@ public class Host {
     }
 
     private static void initializeTCP(){
-        task = ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
+        task = Bukkit.getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
             if (data != null) {
                 try {
                     Socket s = socket.accept();

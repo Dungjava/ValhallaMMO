@@ -7,6 +7,8 @@ import me.athlaeos.valhallammo.dom.MinecraftVersion;
 import me.athlaeos.valhallammo.event.EntityBleedEvent;
 import me.athlaeos.valhallammo.hooks.WorldGuardHook;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
+
+import org.bukkit.Bukkit;
 import org.bukkit.EntityEffect;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -80,7 +82,7 @@ public class Bleeder {
         BleedingInstance instance = bleedingEntities.get(bleeder.getUniqueId());
         double resistance = AccumulativeStatManager.getRelationalStats("BLEED_RESISTANCE", bleeder, causedBy, true);
         EntityBleedEvent event = new EntityBleedEvent(bleeder, causedBy, combatType, damage, resistance, duration, stacks);
-        ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+        Bukkit.getPluginManager().callEvent(event);
         if (!event.isCancelled()){
             if (event.getBleedResistance() >= 1) return;
             if (instance == null) instance = new BleedingInstance(bleeder, causedBy, event.getDuration(), event.getBleedDamage() * (1 + event.getBleedResistance()));

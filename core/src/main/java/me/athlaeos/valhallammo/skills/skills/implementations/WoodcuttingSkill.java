@@ -16,6 +16,8 @@ import me.athlaeos.valhallammo.playerstats.profiles.implementations.WoodcuttingP
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.utility.*;
 import me.athlaeos.valhallammo.utility.Timer;
+
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Tag;
@@ -100,7 +102,7 @@ public class WoodcuttingSkill extends Skill implements Listener {
             ValhallaMMO.logWarning(String.join(", ", invalidMaterials));
         }
 
-        ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(this, ValhallaMMO.getInstance());
+        Bukkit.getPluginManager().registerEvents(this, ValhallaMMO.getInstance());
     }
 
     private final int[][] treeCapitatorScanArea = MathUtils.getOffsetsBetweenPoints(new int[]{-1, 0, -1}, new int[]{1, 1, 1});
@@ -150,7 +152,7 @@ public class WoodcuttingSkill extends Skill implements Listener {
                     e.getPlayer().breakBlock(b);
                 }, (b) -> {
                     treeCapitatingPlayers.remove(e.getPlayer().getUniqueId());
-                    ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+                    Bukkit.getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
                         List<Block> leaves = leafOrigin == null ? new ArrayList<>() : new ArrayList<>(BlockUtils.getBlockVein(leafOrigin, treeCapitatorLeavesLimit, bl -> Tag.LEAVES.isTagged(bl.getType()) && (bl.getBlockData() instanceof Leaves l && !l.isPersistent() && l.getDistance() > 3), treeCapitatorLeavesScanArea));
                         Collections.shuffle(leaves);
                         BlockUtils.processBlocksDelayed(e.getPlayer(), leaves, (p) -> true, bl -> {
@@ -170,7 +172,7 @@ public class WoodcuttingSkill extends Skill implements Listener {
                     e.getPlayer().breakBlock(b);
                 }, (b) -> {
                     treeCapitatingPlayers.remove(e.getPlayer().getUniqueId());
-                    ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+                    Bukkit.getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
                         List<Block> leaves = leafOrigin == null ? new ArrayList<>() : new ArrayList<>(BlockUtils.getBlockVein(leafOrigin, treeCapitatorLeavesLimit, bl -> Tag.LEAVES.isTagged(bl.getType()) && (bl.getBlockData() instanceof Leaves l && !l.isPersistent() && l.getDistance() > 3), treeCapitatorLeavesScanArea));
                         Collections.shuffle(leaves);
                         BlockUtils.processBlocksDelayed(e.getPlayer(), leaves, (p) -> true, bl -> {

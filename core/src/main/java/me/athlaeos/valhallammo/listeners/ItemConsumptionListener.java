@@ -12,6 +12,8 @@ import me.athlaeos.valhallammo.potioneffects.PotionEffectRegistry;
 import me.athlaeos.valhallammo.potioneffects.PotionEffectWrapper;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
+
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -60,24 +62,24 @@ public class ItemConsumptionListener implements Listener {
 
             int finalFoodToReplenish = foodToReplenish;
             float finalSaturationToReplenish = saturationBefore + saturationToReplenish;
-            ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+            Bukkit.getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
                 cancelNextFoodEffects.remove(e.getPlayer().getUniqueId());
                 cancelNextFoodEvent.remove(e.getPlayer().getUniqueId());
                 FoodLevelChangeEvent event = new FoodLevelChangeEvent(e.getPlayer(), Math.max(0, Math.min(20, hungerBefore + finalFoodToReplenish)), item);
-                ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+                Bukkit.getPluginManager().callEvent(event);
                 if (!event.isCancelled()){
                     e.getPlayer().setFoodLevel(Math.max(0, Math.min(20, event.getFoodLevel())));
                     e.getPlayer().setSaturation(Math.max(0, Math.min(20, finalSaturationToReplenish)));
                 }
             }, 1L);
         } else {
-            ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+            Bukkit.getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
                 int hungerDifference = e.getPlayer().getFoodLevel() - hungerBefore;
                 float saturationDifference = e.getPlayer().getSaturation() - saturationBefore;
                 int newFoodLevel = hungerBefore + (int) Math.round(hungerDifference * multiplier);
                 float newSaturationLevel = saturationBefore + (saturationDifference * (float) multiplier);
                 FoodLevelChangeEvent event = new FoodLevelChangeEvent(e.getPlayer(), Math.max(0, Math.min(20, newFoodLevel)), item);
-                ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+                Bukkit.getPluginManager().callEvent(event);
                 if (!event.isCancelled()){
                     e.getPlayer().setFoodLevel(Math.max(0, Math.min(20, event.getFoodLevel())));
                     e.getPlayer().setSaturation(Math.max(0, Math.min(20, newSaturationLevel)));

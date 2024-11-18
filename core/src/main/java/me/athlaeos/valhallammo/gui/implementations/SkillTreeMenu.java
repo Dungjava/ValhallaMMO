@@ -27,6 +27,7 @@ import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import me.athlaeos.valhallammo.version.ConventionUtils;
 import org.apache.commons.lang.ArrayUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.AttributeModifier;
@@ -169,7 +170,7 @@ public class SkillTreeMenu extends Menu {
                                 // remove resources
                                 for (ResourceExpense expense : p.getExpenses()) expense.purchase(target, true);
 
-                                ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), this::setMenuItems, 2L);
+                                Bukkit.getScheduler().runTaskLater(ValhallaMMO.getInstance(), this::setMenuItems, 2L);
                             } else perkConfirmation = p.getName();
                         } else {
                             for (ResourceExpense expense : p.getExpenses()){
@@ -407,7 +408,7 @@ public class SkillTreeMenu extends Menu {
     }
 
     private void buildSkillTrees(){
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
             List<Skill> skills = new ArrayList<>(SkillRegistry.getAllSkills().values());
             skills.sort(Comparator.comparingInt(Skill::getSkillTreeMenuOrderPriority));
             for (Skill s : skills){

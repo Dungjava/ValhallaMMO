@@ -161,7 +161,7 @@ public class ItemUtils {
 
     public static void startProjectileRunnableCache(){
         // cleans up the stored projectile cache every 10 seconds, removing items if they've been in there for 10 seconds or longer
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskTimer(ValhallaMMO.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskTimer(ValhallaMMO.getInstance(), () -> {
             for (UUID uuid : new HashMap<>(storedProjectileCache).keySet()){
                 if (storedProjectileCachedAt.get(uuid) + 10000 > System.currentTimeMillis()) {
                     storedProjectileCachedAt.remove(uuid);
@@ -605,7 +605,7 @@ public class ItemUtils {
                 }
             }
             PlayerItemDamageEvent event = new PlayerItemDamageEvent(who, item, damage);
-            ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+            Bukkit.getPluginManager().callEvent(event);
             if (!event.isCancelled()){
                 if (!CustomDurabilityManager.hasCustomDurability(meta)){
                     Damageable damageable = (Damageable) meta;
@@ -811,7 +811,7 @@ public class ItemUtils {
         ItemStack oldCursor = e.getOldCursor().clone();
         oldCursor.setAmount(newAmount);
 
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
             if (oldCursor.getAmount() > 0) e.getWhoClicked().setItemOnCursor(oldCursor);
             else e.getWhoClicked().setItemOnCursor(null);
         }, 1L);

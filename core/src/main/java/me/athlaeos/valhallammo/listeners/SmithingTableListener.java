@@ -20,6 +20,8 @@ import me.athlaeos.valhallammo.item.SmithingItemPropertyManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Timer;
 import me.athlaeos.valhallammo.utility.Utils;
+
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -115,7 +117,7 @@ public class SmithingTableListener implements Listener {
                 if (ItemUtils.isEmpty(finalAddition) || CustomFlag.hasFlag(addition.getMeta(), CustomFlag.UNCRAFTABLE) || ItemUtils.isEmpty(result.getItem()) || CustomFlag.hasFlag(result.getMeta(), CustomFlag.UNCRAFTABLE)){
                     e.setCancelled(true);
                 } else {
-                    ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () ->
+                    Bukkit.getScheduler().runTaskLater(ValhallaMMO.getInstance(), () ->
                             e.getInventory().setItem(additionIndex, finalAddition), 1L
                     );
                 }
@@ -134,7 +136,7 @@ public class SmithingTableListener implements Listener {
     @SuppressWarnings("all")
     @EventHandler
     public void onPrepareSmithing(PrepareSmithingEvent e){
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
             boolean isTemplateCompatible = MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20);
             int baseIndex = isTemplateCompatible ? 1 : 0;
             int templateIndex = baseIndex - 1;
@@ -224,7 +226,7 @@ public class SmithingTableListener implements Listener {
         String key = key(template, base.getItem(), addition.getItem());
         if (smithingRecipeCache.containsKey(key)) return smithingRecipeCache.get(key);
         boolean isTemplateCompatible = MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20);
-        Iterator<Recipe> iterator = ValhallaMMO.getInstance().getServer().recipeIterator();
+        Iterator<Recipe> iterator = Bukkit.recipeIterator();
         SmithingRecipe found = null;
         while (iterator.hasNext()){
             if (iterator.next() instanceof SmithingRecipe s && s.getBase().test(base.getItem()) && s.getAddition().test(addition.getItem())){

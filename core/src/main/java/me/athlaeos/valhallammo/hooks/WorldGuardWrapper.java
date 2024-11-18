@@ -14,6 +14,8 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import me.athlaeos.valhallammo.ValhallaMMO;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -65,7 +67,7 @@ public class WorldGuardWrapper {
     public static Collection<String> getRegions(){
         Collection<String> regions = new HashSet<>();
         if (ValhallaMMO.isHookFunctional(WorldGuardHook.class)){
-            for (World w : ValhallaMMO.getInstance().getServer().getWorlds()){
+            for (World w : Bukkit.getWorlds()){
                 RegionManager worldManager = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(w));
                 if (worldManager == null) continue;
                 regions.addAll(worldManager.getRegions().keySet());

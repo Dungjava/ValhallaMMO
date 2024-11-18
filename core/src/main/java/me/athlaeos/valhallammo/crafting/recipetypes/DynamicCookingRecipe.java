@@ -9,6 +9,8 @@ import me.athlaeos.valhallammo.item.ItemBuilder;
 import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.*;
@@ -47,13 +49,13 @@ public class DynamicCookingRecipe implements ValhallaRecipe, ValhallaKeyedRecipe
     @Override
     public void registerRecipe() {
         Recipe recipe = generateRecipe();
-        if (ValhallaMMO.getInstance().getServer().getRecipe(key) != null) ValhallaMMO.getInstance().getServer().removeRecipe(key);
-        if (recipe != null) ValhallaMMO.getInstance().getServer().addRecipe(recipe);
+        if (Bukkit.getRecipe(key) != null) Bukkit.removeRecipe(key);
+        if (recipe != null) Bukkit.addRecipe(recipe);
     }
 
     @Override
     public void unregisterRecipe() {
-        if (ValhallaMMO.getInstance().getServer().getRecipe(key) != null) ValhallaMMO.getInstance().getServer().removeRecipe(key);
+        if (Bukkit.getRecipe(key) != null) Bukkit.removeRecipe(key);
     }
 
     public String getName() { return name; }

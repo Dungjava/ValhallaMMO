@@ -2,6 +2,8 @@ package me.athlaeos.valhallammo.playerstats;
 
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.utility.EntityUtils;
+
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 
@@ -43,11 +45,11 @@ public class EntityCache {
     }
 
     public static void attemptCacheCleanup(){
-        ValhallaMMO.getInstance().getServer().getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
+        Bukkit.getScheduler().runTask(ValhallaMMO.getInstance(), () -> {
             if (lastCacheCleanup + CACHE_CLEANUP_DELAY < System.currentTimeMillis()){
                 Collection<UUID> uuids = new HashSet<>(cachedProperties.keySet());
                 uuids.forEach(u -> {
-                    Entity entity = ValhallaMMO.getInstance().getServer().getEntity(u);
+                    Entity entity = Bukkit.getEntity(u);
                     if (entity == null || !entity.isValid()){
                         cachedProperties.remove(u);
                         lastCacheRefreshMap.remove(u);

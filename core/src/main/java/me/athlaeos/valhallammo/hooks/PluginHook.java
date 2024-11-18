@@ -1,5 +1,7 @@
 package me.athlaeos.valhallammo.hooks;
 
+import org.bukkit.Bukkit;
+
 import me.athlaeos.valhallammo.ValhallaMMO;
 
 public abstract class PluginHook {
@@ -7,7 +9,7 @@ public abstract class PluginHook {
     private final String plugin;
 
     public PluginHook(String name){
-        this.isPresent = ValhallaMMO.getInstance().getServer().getPluginManager().getPlugin(name) != null;
+        this.isPresent = Bukkit.getPluginManager().getPlugin(name) != null;
         this.plugin = name;
     }
 

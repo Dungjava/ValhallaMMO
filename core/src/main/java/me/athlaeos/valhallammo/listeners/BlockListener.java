@@ -4,6 +4,8 @@ import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.utility.BlockStore;
 import me.athlaeos.valhallammo.utility.BlockUtils;
+
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -31,7 +33,7 @@ import java.util.stream.Collectors;
 public class BlockListener implements Listener {
 
     public BlockListener(){
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskTimer(ValhallaMMO.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskTimer(ValhallaMMO.getInstance(), () -> {
             for (Location b : blocksToConsiderBroken) {
                 BlockStore.setPlaced(b.getBlock(), false);
                 BlockStore.setBreakReason(b.getBlock(), BlockStore.BreakReason.MINED);

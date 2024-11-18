@@ -9,6 +9,8 @@ import me.athlaeos.valhallammo.potioneffects.EffectResponsibility;
 import me.athlaeos.valhallammo.utility.EntityUtils;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
+
+import org.bukkit.Bukkit;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -101,7 +103,7 @@ public class EntityDamagedListener implements Listener {
 
                 if ((type != null && type.isImmuneable()) && customDamage <= 0) e.setCancelled(true);
                 if (customDamageEnabled && l.getHealth() - e.getFinalDamage() <= 0) e.setDamage(0);
-                ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+                Bukkit.getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
                     l.setNoDamageTicks(iFrames);
                     if (customDamageEnabled && !e.isCancelled()){
                         AttributeInstance health = l.getAttribute(Attribute.GENERIC_MAX_HEALTH);
@@ -116,19 +118,19 @@ public class EntityDamagedListener implements Listener {
                 if (damageCause.equals("POISON")) {
                     e.setDamage(0);
                     l.setHealth(Math.min(l.getHealth(), 1));
-                    ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> customDamageCauses.remove(l.getUniqueId()), 1L);
+                    Bukkit.getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> customDamageCauses.remove(l.getUniqueId()), 1L);
                     return;
                 }
                 double previousHealth = l.getHealth();
                 if (customDamage > 0) DamageIndicatorRegistry.sendDamageIndicator(l, type, customDamage, customDamage - originalDamage);
                 if (l.getHealth() > 0) l.setHealth(0.0001); // attempt to ensure that this attack will kill
                 if (e.getFinalDamage() == 0) { // if player wouldn't have died even with this little health, force a death (e.g. with resistance V)
-                    ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+                    Bukkit.getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
                         // l.setLastDamageCause(e);
                         if (l.getHealth() > 0) l.setHealth(0);
                     }, 1L);
                 } else {
-                    ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+                    Bukkit.getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
                         if (e.isCancelled()) l.setHealth(previousHealth); // if the event was cancelled at this point, restore health to what it was previously
                         customDamageCauses.remove(l.getUniqueId());
                     }, 1L);
@@ -139,7 +141,7 @@ public class EntityDamagedListener implements Listener {
 
     private static Entity lastDamager(EntityDamageEvent e){
         UUID lastDamagerUUID = e instanceof EntityDamageByEntityEvent eve ? eve.getDamager().getUniqueId() : lastDamagedByMap.get(e.getEntity().getUniqueId());
-        return lastDamagerUUID == null ? null : ValhallaMMO.getInstance().getServer().getEntity(lastDamagerUUID);
+        return lastDamagerUUID == null ? null : Bukkit.getEntity(lastDamagerUUID);
     }
 
     public static double calculateCustomDamage(EntityDamageEvent e){
@@ -247,7 +249,7 @@ public class EntityDamagedListener implements Listener {
         UUID lastDamagerUUID = lastDamagedByMap.get(e.getUniqueId());
         return lastDamagerUUID == null ?
                 (e.getLastDamageCause() instanceof EntityDamageByEntityEvent d ? d.getDamager() : null) :
-                ValhallaMMO.getInstance().getServer().getEntity(lastDamagerUUID);
+                Bukkit.getEntity(lastDamagerUUID);
     }
 
     public static Collection<String> getEntityDamageCauses() {

@@ -8,6 +8,8 @@ import me.athlaeos.valhallammo.parties.PartyManager;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import me.athlaeos.valhallammo.utility.Utils;
+
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -37,7 +39,7 @@ public class PartyManagementCommand implements TabExecutor {
         switch (args[0]){
             case "create" -> {
                 if (args.length <= 2) return badUsage(sender, "/parties create <partyname> <leader>");
-                Player leader = ValhallaMMO.getInstance().getServer().getPlayer(args[1]);
+                Player leader = Bukkit.getPlayer(args[1]);
                 if (leader == null){
                     Utils.sendMessage(sender, TranslationManager.getTranslation("error_command_player_offline"));
                     return true;
@@ -80,7 +82,7 @@ public class PartyManagementCommand implements TabExecutor {
             }
             case "addmember" -> {
                 if (args.length <= 2) return badUsage(sender, "/parties addmember <party> <player>");
-                Player target = ValhallaMMO.getInstance().getServer().getPlayer(args[2]);
+                Player target = Bukkit.getPlayer(args[2]);
                 if (target == null){
                     Utils.sendMessage(sender, TranslationManager.getTranslation("error_command_player_offline"));
                     return true;

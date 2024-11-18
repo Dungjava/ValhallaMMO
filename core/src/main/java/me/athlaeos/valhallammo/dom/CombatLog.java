@@ -3,6 +3,8 @@ package me.athlaeos.valhallammo.dom;
 import me.athlaeos.valhallammo.ValhallaMMO;
 import me.athlaeos.valhallammo.event.PlayerEnterCombatEvent;
 import me.athlaeos.valhallammo.event.PlayerLeaveCombatEvent;
+
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class CombatLog {
@@ -20,7 +22,7 @@ public class CombatLog {
     public void combatAction() {
         if (timeLastCombatAction + 10000 < System.currentTimeMillis()) {
             PlayerEnterCombatEvent event = new PlayerEnterCombatEvent(who);
-            ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+            Bukkit.getPluginManager().callEvent(event);
             if (!event.isCancelled()) {
                 timeLastStartedCombat = event.getWhen();
                 timeLastCombatAction = event.getWhen();
@@ -37,7 +39,7 @@ public class CombatLog {
         if (isInCombat && timeLastCombatAction + combatDuration < System.currentTimeMillis()) { // player was previously in combat
             // player should no longer be considered in combat
             PlayerLeaveCombatEvent event = new PlayerLeaveCombatEvent(who, timeLastStartedCombat, timeLastCombatAction + combatDuration);
-            ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+            Bukkit.getPluginManager().callEvent(event);
             if (!event.isCancelled()) {
                 isInCombat = false;
                 timeInCombat = event.getTimeInCombat(timeLastStartedCombat);

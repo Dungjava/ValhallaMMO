@@ -1,5 +1,7 @@
 package me.athlaeos.valhallammo.dom;
 
+import org.bukkit.Bukkit;
+
 import me.athlaeos.valhallammo.ValhallaMMO;
 
 public enum MinecraftVersion {
@@ -48,7 +50,7 @@ public enum MinecraftVersion {
     private static final MinecraftVersion serverVersion = init();
 
     private static MinecraftVersion init(){
-        String v = ValhallaMMO.getInstance().getServer().getVersion();
+        String v = Bukkit.getVersion();
         for (MinecraftVersion version : MinecraftVersion.values()){
             if (version.versionString1 == null || version.versionString2 == null) continue;
             if (v.contains(version.versionString1) || v.contains(version.versionString2)) return version;

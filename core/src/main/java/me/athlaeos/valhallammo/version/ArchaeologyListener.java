@@ -10,6 +10,8 @@ import me.athlaeos.valhallammo.loot.LootTableRegistry;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.utility.EntityUtils;
 import me.athlaeos.valhallammo.utility.ItemUtils;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
@@ -123,7 +125,7 @@ public class ArchaeologyListener implements Listener {
         LootTableRegistry.setLootTable(b, null);
         List<ItemStack> generatedLoot = LootTableRegistry.getLoot(table, context, LootTable.LootType.ARCHAEOLOGY);
         ValhallaLootPopulateEvent loottableEvent = new ValhallaLootPopulateEvent(table, context, generatedLoot);
-        ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(loottableEvent);
+        Bukkit.getPluginManager().callEvent(loottableEvent);
         if (!loottableEvent.isCancelled()){
             LootListener.prepareBlockDrops(b, loottableEvent.getDrops());
             return switch (loottableEvent.getPreservationType()){

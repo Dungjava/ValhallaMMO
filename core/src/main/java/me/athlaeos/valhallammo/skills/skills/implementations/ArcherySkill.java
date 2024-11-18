@@ -24,10 +24,11 @@ import me.athlaeos.valhallammo.playerstats.profiles.implementations.ArcheryProfi
 import me.athlaeos.valhallammo.potioneffects.implementations.Stun;
 import me.athlaeos.valhallammo.skills.ChunkEXPNerf;
 import me.athlaeos.valhallammo.skills.skills.Skill;
-import me.athlaeos.valhallammo.utility.Bleeder;
 import me.athlaeos.valhallammo.utility.*;
 import me.athlaeos.valhallammo.utility.Timer;
 import me.athlaeos.valhallammo.version.EnchantmentMappings;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -122,7 +123,7 @@ public class ArcherySkill extends Skill implements Listener {
         chargedShotActivationAnimation = AnimationRegistry.CHARGED_SHOT_ACTIVATION;
         chargedShotFireAnimation = AnimationRegistry.CHARGED_SHOT_FIRE;
 
-        ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(this, ValhallaMMO.getInstance());
+        Bukkit.getPluginManager().registerEvents(this, ValhallaMMO.getInstance());
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -204,7 +205,7 @@ public class ArcherySkill extends Skill implements Listener {
         }
         e.setDamage(damage);
 
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
             if (e.isCancelled() || !p.isOnline()) return;
             double chunkNerf = ChunkEXPNerf.getChunkEXPNerf(v.getLocation().getChunk(), p, "archery");
             double entityExpMultiplier = entityExpMultipliers.getOrDefault(v.getType(), 1D);
@@ -261,7 +262,7 @@ public class ArcherySkill extends Skill implements Listener {
             if (chargedShotSonicBoomAnimation != null && a.getVelocity().lengthSquared() >= sonicBoomRequiredVelocity) chargedShotSonicBoomAnimation.animate(p, p.getEyeLocation(), p.getEyeLocation().getDirection(), 0);
             if (trail != null) AnimationUtils.trailProjectile(a, trail == Particle.valueOf(oldOrNew("REDSTONE", "DUST")) ? new RedstoneParticle(trailOptions) : new GenericParticle(trail), 60);
             if (user.crossbowInstantReload && bow.getType() == Material.CROSSBOW){
-                ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+                Bukkit.getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
                     boolean mainHand = !ItemUtils.isEmpty(p.getInventory().getItemInMainHand()) && p.getInventory().getItemInMainHand().getType() == Material.CROSSBOW;
                     ItemStack crossbow = mainHand ? p.getInventory().getItemInMainHand() : p.getInventory().getItemInOffHand();
                     if (ItemUtils.isEmpty(crossbow) || !(crossbow.getItemMeta() instanceof CrossbowMeta crossbowMeta)) return;

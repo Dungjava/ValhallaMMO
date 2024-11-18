@@ -74,7 +74,7 @@ public class CauldronCraftingListener implements Listener {
         if (e.isCancelled() || !(e.getBlock().getBlockData() instanceof Directional d)) return;
         if (!blockThrowItemLimiter.containsKey(b.getLocation())){
             Collection<Entity> entitiesBefore = b.getWorld().getNearbyEntities(b.getRelative(d.getFacing()).getLocation().add(0.5, 0.5, 0.5), 0.5, 0.5, 0.5, (i) -> i instanceof Item);
-            ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+            Bukkit.getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
                 Collection<Entity> newEntities = b.getWorld().getNearbyEntities(b.getRelative(d.getFacing()).getLocation().add(0.5, 0.5, 0.5), 0.5, 0.5, 0.5, (i) -> i instanceof Item && !entitiesBefore.contains(i));
                 Item i = (Item) newEntities.stream().findAny().orElse(null);
                 if (i == null) return;
@@ -183,7 +183,7 @@ public class CauldronCraftingListener implements Listener {
                 setCauldronContents(cauldron, contents);
 
                 CauldronCompleteRecipeEvent completionEvent = new CauldronCompleteRecipeEvent(cauldron, recipe, responsible, result.get());
-                ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(completionEvent);
+                Bukkit.getPluginManager().callEvent(completionEvent);
 
                 for (int i = 0; i < count; i++){
                     if (toHand && responsible != null) {
@@ -346,7 +346,7 @@ public class CauldronCraftingListener implements Listener {
         if (newContents.size() > cauldron_capacity) return null;
 
         CauldronAbsorbItemEvent event = new CauldronAbsorbItemEvent(cauldron, i, adder);
-        ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+        Bukkit.getPluginManager().callEvent(event);
         if (event.isCancelled()) return null;
 
         cauldron.getWorld().playSound(cauldron.getLocation().add(0.5, 0.5, 0.5), Sound.ITEM_BUCKET_FILL, 1F, 1F);
@@ -425,7 +425,7 @@ public class CauldronCraftingListener implements Listener {
 
         @Override
         public void run() {
-            Player p = cooker == null ? null : ValhallaMMO.getInstance().getServer().getPlayer(cooker);
+            Player p = cooker == null ? null : Bukkit.getPlayer(cooker);
             if (duration > 0){
                 Animation animation = AnimationRegistry.getAnimation(AnimationRegistry.BLOCK_BUBBLES.id());
                 if (animation != null && p != null) animation.animate(p, cauldron, null, duration);
@@ -445,7 +445,7 @@ public class CauldronCraftingListener implements Listener {
                     setCauldronContents(b, contents);
 
                     CauldronCompleteRecipeEvent completionEvent = new CauldronCompleteRecipeEvent(b, recipe, p, result.get());
-                    ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(completionEvent);
+                    Bukkit.getPluginManager().callEvent(completionEvent);
                     for (int i = 0; i < quantity; i++)
                         b.getWorld().dropItem(cauldron.add(0.5, 0.5, 0.5), completionEvent.getResult());
                     Animation animation = AnimationRegistry.getAnimation(AnimationRegistry.BLOCK_SPARKS_EXTINGUISH.id());
@@ -487,8 +487,8 @@ public class CauldronCraftingListener implements Listener {
 
         @Override
         public void run() {
-            Item i = (ValhallaMMO.getInstance().getServer().getEntity(item) instanceof Item it) ? it : null;
-            Player p = thrower == null ? null : ValhallaMMO.getInstance().getServer().getPlayer(thrower);
+            Item i = (Bukkit.getEntity(item) instanceof Item it) ? it : null;
+            Player p = thrower == null ? null : Bukkit.getPlayer(thrower);
             if (ticks > 0 && i != null && i.isValid() && p != null){
                 Block b = i.getLocation().getBlock();
                 if (!b.getType().toString().contains("CAULDRON")) b = i.getLocation().add(0, -0.9, 0).getBlock();

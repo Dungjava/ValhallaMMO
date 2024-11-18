@@ -9,6 +9,8 @@ import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile
 import me.athlaeos.valhallammo.skills.perk_rewards.PerkRewardRegistry;
 import me.athlaeos.valhallammo.skills.perk_rewards.implementations.*;
 import me.athlaeos.valhallammo.skills.skills.implementations.*;
+
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
@@ -89,7 +91,7 @@ public class SkillRegistry {
     }
 
     public static void updateSkillProgression(Player p, boolean runPersistentStartingPerks){
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(ValhallaMMO.getInstance(), () -> {
             getSkill(PowerSkill.class).updateSkillStats(p, runPersistentStartingPerks);
             allSkills.values().forEach(s -> {
                 if (s instanceof PowerSkill) return;

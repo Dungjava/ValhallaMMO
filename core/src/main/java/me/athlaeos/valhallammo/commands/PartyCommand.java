@@ -5,6 +5,8 @@ import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.parties.Party;
 import me.athlaeos.valhallammo.parties.PartyManager;
 import me.athlaeos.valhallammo.utility.Utils;
+
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -97,7 +99,7 @@ public class PartyCommand implements TabExecutor {
             }
             case "invite" -> {
                 if (args.length == 1) return badUsage(p, "/party invite <player>");
-                Player target = ValhallaMMO.getInstance().getServer().getPlayer(args[1]);
+                Player target = Bukkit.getPlayer(args[1]);
                 if (target == null) {
                     Utils.sendMessage(p, TranslationManager.getTranslation("error_command_player_offline"));
                     return true;
@@ -133,7 +135,7 @@ public class PartyCommand implements TabExecutor {
             }
             case "transferleadership" -> {
                 if (args.length == 1) return badUsage(p, "/party transferleadership <player>");
-                Player target = ValhallaMMO.getInstance().getServer().getPlayer(args[1]);
+                Player target = Bukkit.getPlayer(args[1]);
                 if (target == null) {
                     Utils.sendMessage(p, TranslationManager.getTranslation("error_command_player_offline"));
                     return true;
@@ -148,7 +150,7 @@ public class PartyCommand implements TabExecutor {
             }
             case "setrank" -> {
                 if (args.length <= 2) return badUsage(p, "/party setrank <player> <rank>");
-                Player target = ValhallaMMO.getInstance().getServer().getPlayer(args[1]);
+                Player target = Bukkit.getPlayer(args[1]);
                 if (target == null) {
                     Utils.sendMessage(p, TranslationManager.getTranslation("error_command_player_offline"));
                     return true;
@@ -242,7 +244,7 @@ public class PartyCommand implements TabExecutor {
             }
             case "shareitem" -> {
                 if (args.length == 1) return badUsage(p, "/party shareitem <player>");
-                Player target = ValhallaMMO.getInstance().getServer().getPlayer(args[1]);
+                Player target = Bukkit.getPlayer(args[1]);
                 if (target == null) {
                     Utils.sendMessage(p, TranslationManager.getTranslation("error_command_player_offline"));
                     return true;

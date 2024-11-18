@@ -5,6 +5,8 @@ import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
 import me.athlaeos.valhallammo.ValhallaMMO;
+
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -66,12 +68,12 @@ public class PacketListener implements Listener {
     }
 
     public void addAll(){
-        for (Player p : ValhallaMMO.getInstance().getServer().getOnlinePlayers())
+        for (Player p : Bukkit.getOnlinePlayers())
             addChannel(p);
     }
 
     public void closeAll(){
-        for (Player p : ValhallaMMO.getInstance().getServer().getOnlinePlayers())
+        for (Player p : Bukkit.getOnlinePlayers())
             closeChannel(p);
     }
 

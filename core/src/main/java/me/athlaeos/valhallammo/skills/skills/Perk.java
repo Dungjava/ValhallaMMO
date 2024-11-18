@@ -9,6 +9,8 @@ import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.playerstats.profiles.implementations.PowerProfile;
 import me.athlaeos.valhallammo.skills.perkunlockconditions.UnlockCondition;
 import me.athlaeos.valhallammo.utility.Utils;
+
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -236,7 +238,7 @@ public class Perk {
             p.sendMessage(Utils.chat(message));
         }
         for (String command : commands){
-            ValhallaMMO.getInstance().getServer().dispatchCommand(ValhallaMMO.getInstance().getServer().getConsoleSender(), command.replace("%player%", p.getName()));
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("%player%", p.getName()));
         }
         for (PerkReward reward : rewards){
             reward.apply(p);
@@ -245,7 +247,7 @@ public class Perk {
 
     public void remove(Player p){
         for (String command : undoCommands){
-            ValhallaMMO.getInstance().getServer().dispatchCommand(ValhallaMMO.getInstance().getServer().getConsoleSender(), command.replace("%player%", p.getName()));
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("%player%", p.getName()));
         }
         for (PerkReward reward : rewards){
             if (reward.isPersistent()) continue;

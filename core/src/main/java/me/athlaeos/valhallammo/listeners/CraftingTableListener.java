@@ -23,6 +23,8 @@ import me.athlaeos.valhallammo.potioneffects.PotionEffectWrapper;
 import me.athlaeos.valhallammo.item.SmithingItemPropertyManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
+
+import org.bukkit.Bukkit;
 import org.bukkit.EntityEffect;
 import org.bukkit.Keyed;
 import org.bukkit.Material;
@@ -150,7 +152,7 @@ public class CraftingTableListener implements Listener {
                                 null : inventory.getMatrix()[toolIndex].clone();
                         inventory.getMatrix()[toolIndex].setAmount(amountCrafted);
                         int finalToolIndex = toolIndex;
-                        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+                        Bukkit.getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
                             ItemStack[] m = inventory.getMatrix();
                             m[finalToolIndex] = tool;
                             inventory.setMatrix(m);

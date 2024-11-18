@@ -5,6 +5,8 @@ import me.athlaeos.valhallammo.crafting.CustomRecipeRegistry;
 import me.athlaeos.valhallammo.crafting.recipetypes.DynamicCookingRecipe;
 import me.athlaeos.valhallammo.playerstats.AccumulativeStatManager;
 import me.athlaeos.valhallammo.utility.BlockUtils;
+
+import org.bukkit.Bukkit;
 import org.bukkit.block.Furnace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -25,7 +27,7 @@ public class FurnaceStartSmeltListener implements Listener {
                     return;
                 }
             } else {
-                Recipe r = ValhallaMMO.getInstance().getServer().getRecipe(recipe.getKey());
+                Recipe r = Bukkit.getRecipe(recipe.getKey());
                 if (!(r instanceof CookingRecipe<?>)) throw new IllegalStateException("Recipe linked to dynamic cooking recipe key is not a cooking recipe");
             }
             Player owner = BlockUtils.getOwner(e.getBlock());

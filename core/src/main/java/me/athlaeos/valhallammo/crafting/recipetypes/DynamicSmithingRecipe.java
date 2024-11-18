@@ -12,6 +12,8 @@ import me.athlaeos.valhallammo.localization.TranslationManager;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.utility.Utils;
 import me.athlaeos.valhallammo.version.SmithingTransformRecipeWrapper;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.*;
@@ -54,13 +56,13 @@ public class DynamicSmithingRecipe implements ValhallaRecipe, ValhallaKeyedRecip
     public void registerRecipe() {
         // if (hasEquivalentVanillaSmithingRecipe(template.getItem(), base.getItem(), addition.getItem())) return; // does not need to be registered because an identical vanilla recipe already exists
         Recipe recipe = generateRecipe();
-        if (ValhallaMMO.getInstance().getServer().getRecipe(key) != null) ValhallaMMO.getInstance().getServer().removeRecipe(key);
-        if (recipe != null) ValhallaMMO.getInstance().getServer().addRecipe(recipe);
+        if (Bukkit.getRecipe(key) != null) Bukkit.removeRecipe(key);
+        if (recipe != null) Bukkit.addRecipe(recipe);
     }
 
     @Override
     public void unregisterRecipe() {
-        if (ValhallaMMO.getInstance().getServer().getRecipe(key) != null) ValhallaMMO.getInstance().getServer().removeRecipe(key);
+        if (Bukkit.getRecipe(key) != null) Bukkit.removeRecipe(key);
     }
 
     private ItemStack translate(ItemStack i){
@@ -166,7 +168,7 @@ public class DynamicSmithingRecipe implements ValhallaRecipe, ValhallaKeyedRecip
     private boolean hasEquivalentVanillaSmithingRecipe(ItemStack template, ItemStack base, ItemStack addition){
         if (base == null || addition == null) return false;
         boolean isTemplateCompatible = MinecraftVersion.currentVersionNewerThan(MinecraftVersion.MINECRAFT_1_20);
-        Iterator<Recipe> iterator = ValhallaMMO.getInstance().getServer().recipeIterator();
+        Iterator<Recipe> iterator = Bukkit.recipeIterator();
         while (iterator.hasNext()){
             if (iterator.next() instanceof SmithingRecipe s && s.getBase().test(base) && s.getAddition().test(addition)){
                 if (s.getBase().test(base) && s.getAddition().test(addition)) {

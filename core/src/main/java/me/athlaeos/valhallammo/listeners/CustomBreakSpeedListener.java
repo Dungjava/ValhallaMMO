@@ -8,6 +8,8 @@ import me.athlaeos.valhallammo.event.PrepareBlockBreakEvent;
 import me.athlaeos.valhallammo.utility.EntityUtils;
 import me.athlaeos.valhallammo.utility.ItemUtils;
 import me.athlaeos.valhallammo.version.PotionEffectMappings;
+
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
@@ -60,7 +62,7 @@ public class CustomBreakSpeedListener implements Listener {
                     if (totalMiningBlocks.containsKey(l)){
                         // block is in the process of being mined
                         for (UUID uuid : new HashMap<>(totalMiningBlocks).getOrDefault(l, new HashSet<>())){
-                            Player player = ValhallaMMO.getInstance().getServer().getPlayer(uuid);
+                            Player player = Bukkit.getPlayer(uuid);
                             if (player == null) continue;
                             float dmg = DigPacketInfo.damage(player, b);
                             process.damage(player, dmg);
@@ -96,7 +98,7 @@ public class CustomBreakSpeedListener implements Listener {
 
         float initialDamage = instantBlockBreaks.contains(b.getLocation()) ? 999 : DigPacketInfo.damage(info.getDigger(), b);
         PrepareBlockBreakEvent event = new PrepareBlockBreakEvent(b, info.getDigger());
-        ValhallaMMO.getInstance().getServer().getPluginManager().callEvent(event);
+        Bukkit.getPluginManager().callEvent(event);
         if (event.isCancelled()) initialDamage = 0;
         if (initialDamage >= 1 || ItemUtils.breaksInstantly(b.getType())) {
             BlockDigProcess.breakBlockInstantly(info.getDigger(), b);
@@ -192,7 +194,7 @@ public class CustomBreakSpeedListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerRespawn(PlayerRespawnEvent e){
-        ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
             fatiguePlayer(e.getPlayer(), true);
             fatiguePlayer(e.getPlayer(), true);
         }, 10L);
@@ -211,7 +213,7 @@ public class CustomBreakSpeedListener implements Listener {
             e.setOverride(true);
         } else if ((e.getAction() == EntityPotionEffectEvent.Action.REMOVED || e.getAction() == EntityPotionEffectEvent.Action.CLEARED) &&
                 e.getOldEffect() != null && e.getOldEffect().getType() == PotionEffectMappings.MINING_FATIGUE.getPotionEffectType() && (e.getOldEffect().getAmplifier() < 0 || e.getOldEffect().getAmplifier() > 4)) {
-            ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> fatiguePlayer(p, true), 2L);
+            Bukkit.getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> fatiguePlayer(p, true), 2L);
         }
     }
 

@@ -20,6 +20,8 @@ import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.utility.Timer;
 import me.athlaeos.valhallammo.utility.*;
 import me.athlaeos.valhallammo.version.EnchantmentMappings;
+
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -104,7 +106,7 @@ public class MiningSkill extends Skill implements Listener {
             ValhallaMMO.logWarning(String.join(", ", invalidMaterials));
         }
 
-        ValhallaMMO.getInstance().getServer().getPluginManager().registerEvents(this, ValhallaMMO.getInstance());
+        Bukkit.getPluginManager().registerEvents(this, ValhallaMMO.getInstance());
     }
 
     private final int[][] veinMiningScanArea = new int[][]{
