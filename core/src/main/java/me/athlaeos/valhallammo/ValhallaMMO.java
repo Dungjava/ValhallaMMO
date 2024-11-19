@@ -146,9 +146,6 @@ public class ValhallaMMO extends JavaPlugin {
         saveConfig("skills/woodcutting_progression.yml");
         TranslationManager.load(lang);
 
-        final WrappedSchedulerBuilder schedulerBuilder = WrappedSchedulerBuilder.builder().plugin(this);
-		scheduler = schedulerBuilder.build();
-
         if (!setupNMS()){
             enabled = false;
             return;
@@ -164,6 +161,9 @@ public class ValhallaMMO extends JavaPlugin {
         registerHook(new WorldGuardHook());
         registerHook(new JustLootItHook());
         registerHook(new DecentHologramsHook());
+
+        final WrappedSchedulerBuilder schedulerBuilder = WrappedSchedulerBuilder.builder().plugin(ValhallaMMO.getInstance());
+        final WrappedScheduler scheduler = schedulerBuilder.build(); // Scheduler ready to use, yay!
     }
 
     @Override

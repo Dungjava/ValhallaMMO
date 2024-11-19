@@ -103,7 +103,7 @@ public class EntityDamagedListener implements Listener {
 
                 if ((type != null && type.isImmuneable()) && customDamage <= 0) e.setCancelled(true);
                 if (customDamageEnabled && l.getHealth() - e.getFinalDamage() <= 0) e.setDamage(0);
-                Bukkit.getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
+                ValhallaMMO.getInstance().getServer().getScheduler().runTaskLater(ValhallaMMO.getInstance(), () -> {
                     l.setNoDamageTicks(iFrames);
                     if (customDamageEnabled && !e.isCancelled()){
                         AttributeInstance health = l.getAttribute(Attribute.GENERIC_MAX_HEALTH);
